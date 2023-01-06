@@ -15,3 +15,4 @@ pytorch-lightning
 scipy
 timm
 dvc
+dvc-gdrive
