@@ -3,7 +3,7 @@
 
 ### Overall goal of the project
 
-The goal of this project is to fine-tune and use a pre-trained image classification model to classify various image datasets.
+The goal of this project is to train, fine-tune and use a pre-trained image classification model to classify various image datasets.
 
 ### What framework are you going to use (PyTorch Image Models, Transformer, Pytorch-Geometrics):
 
