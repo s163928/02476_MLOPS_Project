@@ -133,7 +133,7 @@ outputs/
 
 # datasets
 FashionMNIST/
-*/cifar10
+*/**/cifar10
 
 # vs code
 .vscode/settings.json
