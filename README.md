@@ -1,7 +1,25 @@
 02476_MLOPS_Project
 ==============================
 
-Project in MLOps
+### Overall goal of the project
+
+The goal of this project is to fine-tune and use a pre-trained image classification model to classify various image datasets.
+
+### What framework are you going to use (PyTorch Image Models, Transformer, Pytorch-Geometrics):
+
+The PyTorch Image Models framework.
+
+### How to you intend to include the framework into your project
+
+We will use the framework for data loading and for loading various pre-trained models.
+
+### What data are you going to run on (initially, may change)
+
+Initially we will run the model on the Oxford 102 Flower Dataset. The main point of the project is not to use a specific model and dataset, but rather building the pipeline and structure to fine-tune and use any of the models in the Pytorch Image Model framework to classify any image dataset.
+
+### What deep learning models do you expect to use:
+
+We will use pre-trained models and most likely several different. The initial used is going to be the ResNet CNN model.
 
 Project Organization
 ------------
