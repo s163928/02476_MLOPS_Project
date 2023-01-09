@@ -8,7 +8,7 @@ coverage
 awscli==1.27.44
 flake8
 python-dotenv>=0.5.1
-pytorch
+torch
 torchvision
 wandb
 pytorch-lightning
