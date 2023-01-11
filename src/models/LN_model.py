@@ -15,13 +15,10 @@ class LN_model(pl.LightningModule):
         return x
 
     def training_step(self, batch, batch_idx):
-        # training_step defines the train loop.
-        # it is independent of forward
         data, target = batch
         preds = self(data)
         loss = self.criterion(preds, target)
         self.log("train_loss", loss)
-        
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -29,6 +26,9 @@ class LN_model(pl.LightningModule):
         preds = self(data)
         val_loss = self.criterion(preds, target)
         self.log("val_loss", val_loss)
+
+    def predict_step(self, batch, batch_idx):
+        return self(batch)
 
     def configure_optimizers(self):
         return optim.Adam(self.parameters(), lr=1e-3)
