@@ -16,3 +16,4 @@ scipy
 timm
 dvc
 dvc-gdrive
+pytest
