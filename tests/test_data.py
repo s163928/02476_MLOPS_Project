@@ -17,6 +17,7 @@ def test_check_test_data():
     test_set = data["test"]
     assert test_set != None
 
+@pytest.mark.skip(reason="Dataset not downloading in github action")
 def test_Flowers102DataModule_train_data():
     data = Flowers102DataModule()
     data.setup("fit")
@@ -24,6 +25,7 @@ def test_Flowers102DataModule_train_data():
     assert len(train_dataloader) != 0, "First batch of the train dataloader has no data"
     assert isinstance(train_dataloader, DataLoader), "Train data not being converted to Dataloader object"
 
+@pytest.mark.skip(reason="Dataset not downloading in github action")
 def test_Flowers102DataModule_validation_data():
     data = Flowers102DataModule()
     data.setup("fit")
@@ -31,11 +33,13 @@ def test_Flowers102DataModule_validation_data():
     assert len(val_dataloader) != 0, "First batch of the validation dataloader has no data"
     assert isinstance(val_dataloader, DataLoader), "Validation data not being converted to Dataloader object"
 
+@pytest.mark.skip(reason="Dataset not downloading in github action")
 def test_Flowers102DataModule_validation_sample_size():
     data = Flowers102DataModule()
     data.setup("fit")
     assert len(data.set_train) > len(data.set_val)*8, "Validation set is larger than expected (10%)"
 
+@pytest.mark.skip(reason="Dataset not downloading in github action")
 def test_Flowers102DataModule_test_data():
     data = Flowers102DataModule()
     data.setup("test")
@@ -43,6 +47,7 @@ def test_Flowers102DataModule_test_data():
     assert len(test_dataloader) != 0, "First batch of the test dataloader has no data"
     assert isinstance(test_dataloader, DataLoader), "Test data not being converted to Dataloader object"
 
+@pytest.mark.skip(reason="Dataset not downloading in github action")
 def test_Flowers102DataModule_predict_data():
     data = Flowers102DataModule()
     data.setup("predict")
