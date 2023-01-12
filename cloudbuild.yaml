@@ -6,8 +6,8 @@ steps:
 #   - name: 'gcr.io/vertex-ai-public/vertex-ai-cli'
 #     args: ['job', 'create', '--project-id=primal-graph-374308', '--name=vertex-with-docker', '--region=europe-west1', '--config=config_vertex_cpu.yaml']
    - name: 'gcr.io/cloud-builders/gcloud'
-    #  args: ['ai', 'custom-jobs', 'create', 
-     args: ['beta', 'ai-platform', 'jobs', 'submit', 'custom',          
+     args: ['ai', 'custom-jobs', 'create', 
+    #  args: ['beta', 'ai-platform', 'jobs', 'submit', 'custom',          
           '--display-name=vertex-with-docker',
           '--region=europe-west1',
           # '--module-name=my_module',
