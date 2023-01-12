@@ -5,3 +5,16 @@ steps:
      args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest']
 #   - name: 'gcr.io/vertex-ai-public/vertex-ai-cli'
 #     args: ['job', 'create', '--project-id=primal-graph-374308', '--name=vertex-with-docker', '--region=europe-west1', '--config=config_vertex_cpu.yaml']
+   - name: 'gcr.io/cloud-builders/gcloud'
+     args: ['ai-platform', 'jobs', 'submit', 'training', 'vertex-with-docker',
+          '--region=europe-west1',
+          # '--module-name=my_module',
+          # '--package-path=path/to/my_module',
+          '--job-dir=gs://mlops-project/jobs/vertex-with-docker',
+          '--config=config_vertex_cpu.yaml',
+          # '--runtime-version=2.3',
+          # '--python-version=3.7',
+          '--image-uri=gcr.io/primal-graph-374308/trainer_timm_ln:latest',
+          '--project=primal-graph-374308']
+   - name: 'gcr.io/cloud-builders/gsutil'
+     args: ['cp', '-r', 'models/*', 'gs://mlops-project/models/']
