@@ -1,5 +1,5 @@
 steps:
    - name: 'gcr.io/cloud-builders/docker'
-     args: ['build', '-t', 'gcr.io/primal-graph-374308/trainer_timm_LN:latest', '.']
+     args: ['build', '-t', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest', '.']
    - name: 'gcr.io/cloud-builders/docker'
-     args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_LN:latest']
+     args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest']
