@@ -5,9 +5,13 @@ import wandb
 import timm
 
 class LN_model(pl.LightningModule):
-    def __init__(self, model_name='resnet18', pretrained=True, in_chans=3):
+    def __init__(self, model_name='resnet18', pretrained=True, in_chans=3, num_classes=102):
         super().__init__()
-        self.model = timm.create_model(model_name=model_name, pretrained=pretrained, in_chans=in_chans)
+        self.model = timm.create_model(
+            model_name=model_name,
+            pretrained=pretrained,
+            in_chans=in_chans,
+            num_classes=num_classes)
         self.criterion = nn.CrossEntropyLoss()
         
     def forward(self, x):
@@ -15,13 +19,10 @@ class LN_model(pl.LightningModule):
         return x
 
     def training_step(self, batch, batch_idx):
-        # training_step defines the train loop.
-        # it is independent of forward
         data, target = batch
         preds = self(data)
         loss = self.criterion(preds, target)
         self.log("train_loss", loss)
-        
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -29,6 +30,10 @@ class LN_model(pl.LightningModule):
         preds = self(data)
         val_loss = self.criterion(preds, target)
         self.log("val_loss", val_loss)
+
+    def predict_step(self, batch, batch_idx):
+        preds = self(batch)
+        return preds.argmax(dim=-1)
 
     def configure_optimizers(self):
         return optim.Adam(self.parameters(), lr=1e-3)
