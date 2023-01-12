@@ -10,7 +10,7 @@ like:
 
 ```--- question 1 fill here ---```
 
-where you instead should add your answers. Any other changes may have unwanted consequences when your report is auto
+where  you instead should add your answers. Any other changes may have unwanted consequences when your report is auto
 generated in the end of the course. For questions where you are asked to include images, start by adding the image to
 the `figures` subfolder (please only use `.png`, `.jpg` or `.jpeg`) and then add the following code in your answer:
 
