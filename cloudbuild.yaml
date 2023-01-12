@@ -3,3 +3,5 @@ steps:
      args: ['build', '-t', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest', '.']
    - name: 'gcr.io/cloud-builders/docker'
      args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest']
+   - name: 'gcr.io/vertex-ai-public/vertex-ai-cli'
+     args: ['job', 'create', '--project-id=primal-graph-374308', '--name=vertex-with-docker', '--region=europe-west1', '--config=config_vertex_cpu.yaml']
