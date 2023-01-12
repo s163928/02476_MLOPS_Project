@@ -49,7 +49,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 1 fill here ---
+--- 26 ---
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -60,7 +60,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 2 fill here ---
+--- *s163928, s212919, s120356* ---
 
 ### Question 3
 > **What framework did you choose to work with and did it help you complete the project?**
@@ -118,7 +118,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 6 fill here ---
+--- We implemented the pre-commit package and setup checks for trailing whitespace, end of file lines, yaml files, large files, flake8, isort and black. What this means is that all off these checks are being run when trying to commit changes. This is important because it not only makes the code easier to read but also to maintain. Especially checks for unused- and over complex lines of code help making it easy to maintain. Keeping a consistent style throughout the code base also makes collaboration easier in the sense that everyone is not writing code in their own unique style.  ---
 
 ## Version control
 
@@ -161,7 +161,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 9 fill here ---
+--- We made use of both branches and PRs in our project. When a feature need to be created e.g. setting up  unit test a branch was made with that name. The feature would then be developed by one or more people from the group, where a PR would be made. The PR would require 1 reviewer and the unit test workflow to pass before allowing a merge request to be made into the main branch. By using this structure we avoided merge conflicts and made sure that all our test were successful and thereby not pushing broken code to the main branch. ---
 
 ### Question 10
 
