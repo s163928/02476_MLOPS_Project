@@ -11,7 +11,7 @@ steps:
           '--region=europe-west1',
           # '--module-name=my_module',
           # '--package-path=path/to/my_module',
-          '--job-dir=gs://mlops-project/jobs/vertex-with-docker',
+          # '--job-dir=gs://mlops-project/jobs/vertex-with-docker',
           '--config=config_vertex_cpu.yaml',
           # '--runtime-version=2.3',
           # '--python-version=3.7',
