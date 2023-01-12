@@ -15,6 +15,9 @@ pytorch-lightning
 scipy
 timm
 dvc
+
+dvc[gdrive]
+
 dvc-gdrive
 pytest
 pre-commit
