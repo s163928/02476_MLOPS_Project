@@ -25,9 +25,9 @@ dvc[gdrive]
 dvc-gdrive
 fastapi
 uvicorn[standard]
+
 pytest
 pre-commit
 python-multipart
 pydantic
-fastapi
-uvicorn[standard]
+
