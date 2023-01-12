@@ -2,8 +2,9 @@ from torch import nn, optim
 from torchmetrics.functional import accuracy
 import pytorch_lightning as pl
 import timm
-import wandb
 import torch
+from torch import nn, optim
+
 
 class LN_model(pl.LightningModule):
     def __init__(self, model_name = 'resnet18', pretrained = True, 

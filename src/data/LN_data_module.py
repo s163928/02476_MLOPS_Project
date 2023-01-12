@@ -32,6 +32,7 @@ class predictImageDataset(Dataset):
     def __getitem__(self, idx):
         return self.predict_images[idx].float()
 
+
 class Flowers102DataModule(pl.LightningDataModule):
     def __init__(self, data_dir: str = "./data/raw", predict_data=None):
         super().__init__()

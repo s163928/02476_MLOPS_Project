@@ -25,6 +25,8 @@ def predict(model: str, data=None):
 
     return preds[0].tolist()
 
+    return f"Class predictions: {preds}"
+
 
 if __name__ == "__main__":
     _predict()
