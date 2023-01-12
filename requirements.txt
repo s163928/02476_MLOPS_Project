@@ -17,3 +17,4 @@ timm
 dvc
 dvc-gdrive
 pytest
+pre-commit
