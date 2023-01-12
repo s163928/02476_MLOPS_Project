@@ -16,3 +16,5 @@ scipy
 timm
 dvc
 dvc-gdrive
+fastapi
+uvicorn[standard]
