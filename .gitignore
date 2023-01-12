@@ -4,3 +4,4 @@ wandb
 /data
 /flowers
 /predict
+/models/*

@@ -21,7 +21,7 @@ class predictImageDataset(Dataset):
         return self.predict_images[idx].float()
 
 class Flowers102DataModule(pl.LightningDataModule):
-    def __init__(self, data_dir: str = "./data/raw", predict_dir: str = "./predict"):
+    def __init__(self, data_dir: str = "./data/raw",predict_dir: str = None):
         super().__init__()
         self.data_dir = data_dir
         self.predict_dir = predict_dir
@@ -42,7 +42,7 @@ class Flowers102DataModule(pl.LightningDataModule):
         if stage == "test":
             self.dataset_test = datasets.Flowers102(self.data_dir, "test", transform=transform)
 
-        # Assign predict dataset from folder when initialising class.
+        # Assign predict dataset from custom class and folder.
         if stage == "predict":
             self.dataset_predict = predictImageDataset(self.predict_dir)
 
@@ -55,7 +55,6 @@ class Flowers102DataModule(pl.LightningDataModule):
     def test_dataloader(self):
         return DataLoader(self.dataset_test, batch_size=68)
 
-    # Placeholder...
     def predict_dataloader(self):
         return DataLoader(self.dataset_predict, batch_size=68)
 
