@@ -2,11 +2,12 @@
 # pip install click
 # pip install markdown
 
+import re
+import warnings
+from functools import partial
+
 import click
 import markdown
-import warnings
-import re
-from functools import partial
 
 
 class TeacherWarning(UserWarning):
@@ -31,7 +32,7 @@ def html():
 
 
 @cli.command()
-def check():
+def check():  # noqa: C901
     with open("README.md", "r") as file:
         text = file.read()
     text = text[43:]  # remove header
