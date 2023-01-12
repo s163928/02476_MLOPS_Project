@@ -29,3 +29,5 @@ pytest
 pre-commit
 python-multipart
 pydantic
+fastapi
+uvicorn[standard]
