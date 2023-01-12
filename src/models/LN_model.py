@@ -1,19 +1,21 @@
-import torch.nn.functional as F
-from torch import nn, optim, utils, Tensor
 import pytorch_lightning as pl
-import wandb
 import timm
+from torch import nn, optim
+
 
 class LN_model(pl.LightningModule):
-    def __init__(self, model_name='resnet18', pretrained=True, in_chans=3, num_classes=102):
+    def __init__(
+        self, model_name="resnet18", pretrained=True, in_chans=3, num_classes=102
+    ):
         super().__init__()
         self.model = timm.create_model(
             model_name=model_name,
             pretrained=pretrained,
             in_chans=in_chans,
-            num_classes=num_classes)
+            num_classes=num_classes,
+        )
         self.criterion = nn.CrossEntropyLoss()
-        
+
     def forward(self, x):
         x = self.model(x)
         return x
