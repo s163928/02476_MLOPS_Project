@@ -12,7 +12,7 @@ repos:
     rev: 4.0.1
     hooks:
     -   id: flake8
-        args: [--ignore, --max-line-length=131]
+        args: [--max-line-length=131]
 -   repo: https://github.com/psf/black
     rev: 22.10.0
     hooks:
