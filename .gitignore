@@ -94,3 +94,6 @@ target/
 #Logging
 wandb
 
+/flowers
+/predict
+/models/*
