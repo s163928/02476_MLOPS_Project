@@ -25,5 +25,6 @@ def predict(model: str, data=None):
 
     return preds[0].tolist()
 
+
 if __name__ == "__main__":
     _predict()

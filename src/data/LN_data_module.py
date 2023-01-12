@@ -1,9 +1,10 @@
-from glob import glob
+
 from io import BytesIO
 import pytorch_lightning as pl
 import torch
 import os
 from PIL import Image
+from glob import glob
 from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import datasets, transforms
 
