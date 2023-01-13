@@ -17,6 +17,8 @@ steps:
           # '--image-uri=gcr.io/primal-graph-374308/trainer_timm_ln:latest',
           '--project=primal-graph-374308']
    - name: 'gcr.io/cloud-builders/docker'
+     args: ['ps']
+   - name: 'gcr.io/cloud-builders/docker'
      args: ['cp', 'trainer_timm_ln:latest:/models', 'models']
    - name: 'gcr.io/cloud-builders/gsutil'
      args: ['cp', '-r', 'models/*', 'gs://mlops-project/models/']
