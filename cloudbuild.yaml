@@ -14,7 +14,7 @@ steps:
           # '--module-name=my_module',
           # '--package-path=path/to/my_module',
           '--job-dir=gs://mlops-project/jobs/vertex-with-docker',
-          '--staging-bukcet=gs://mlops-project/jobs/vertex-with-docker',
+          '--staging-bucket=gs://mlops-project/jobs/vertex-with-docker',
           # '--runtime-version=2.3',
           # '--python-version=3.7',
           '--master-image-uri=gcr.io/primal-graph-374308/trainer_timm_ln:latest',
