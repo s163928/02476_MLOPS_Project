@@ -20,13 +20,10 @@ def _predict(model, data):
 def predict(model: str, data=None):
     model = LN_model().load_from_checkpoint(model)
     datamodule = Flowers102DataModule(predict_data=data)
-    trainer = pl.Trainer()
+    trainer = pl.Trainer(logger=pl.loggers.WandbLogger(project="flowers"))
     preds = trainer.predict(model=model, datamodule=datamodule)
 
     return preds[0].tolist()
-
-    return f"Class predictions: {preds}"
-
 
 if __name__ == "__main__":
     _predict()
