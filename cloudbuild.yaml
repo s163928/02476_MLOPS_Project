@@ -5,7 +5,8 @@ steps:
   #    args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest']
    - name: 'gcr.io/cloud-builders/gcloud'
     #  args: ['ai', 'custom-jobs', 'create', 
-     args: ['beta', 'ai-platform', 'jobs', 'submit', 'custom',          
+    #  args: ['beta', 'ai-platform', 'jobs', 'submit', 'custom',          
+     args: ['beta', 'ai-platform', 'jobs', 'submit', 'training',          
           '--display-name=vertex-with-docker',
           '--region=europe-west1',
           # '--module-name=my_module',
