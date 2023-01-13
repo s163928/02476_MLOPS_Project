@@ -2,6 +2,7 @@ import pytorch_lightning as pl
 from src.models.LN_model import LN_model
 from src.data.LN_data_module import Flowers102DataModule
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
+import shutil
 
 def main():
     print("Training day and night")
@@ -30,3 +31,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    # copy model file after training to gcp-bucket
+    shutil
+    gcp_bucket = '/gcs/mlops-project/jobs/vertex-with-docker'
+    model_dir = '/models'
+    shutil.copytree(model_dir, gcp_bucket)
+    print("Model saved to GCP Bucket")
