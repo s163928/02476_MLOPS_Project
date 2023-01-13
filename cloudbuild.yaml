@@ -16,7 +16,7 @@ steps:
           '--config=config_vertex_cpu.yaml',
           # '--runtime-version=2.3',
           # '--python-version=3.7',
-          # '--image-uri=gcr.io/primal-graph-374308/trainer_timm_ln:latest',
+          '--image-uri=gcr.io/primal-graph-374308/trainer_timm_ln:latest',
           '--project=primal-graph-374308']
    - name: 'gcr.io/cloud-builders/docker'
      args: ['ps']
