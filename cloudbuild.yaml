@@ -16,9 +16,12 @@ steps:
         '--region=europe-west1',
         '--config=config_vertex_cpu.yaml',
         '--project=primal-graph-374308']
-    availableSecrets:
-      secretManager:
-        - versionName: projects/985975349365/secrets/WANDB_API_KEY
-          env: 'WANDB_API_KEY_SECRET'
+    secrets:
+      - kmsKeyName: projects/985975349365/secrets/WANDB_API_KEY
+        secretEnv: WANDB_API_KEY_SECRET
+    # availableSecrets:
+    #   secretManager:
+    #     - versionName: projects/985975349365/secrets/WANDB_API_KEY
+    #       env: 'WANDB_API_KEY_SECRET'
 
 
