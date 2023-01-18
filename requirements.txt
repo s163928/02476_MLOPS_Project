@@ -15,6 +15,7 @@ pytorch-lightning
 scipy
 timm
 dvc
+gcloud
 
 dvc[gdrive]
 
