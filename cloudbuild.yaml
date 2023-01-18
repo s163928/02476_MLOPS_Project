@@ -1,27 +1,16 @@
 steps:
-  #  - name: 'gcr.io/cloud-builders/docker'
-  #    args: ['build', '-t', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest', '.']
-  #  - name: 'gcr.io/cloud-builders/docker'
-  #    args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest']
-   - name: 'gcr.io/cloud-builders/gcloud'
-     args: ['ai', 'custom-jobs', 'create', 
-    #  args: ['beta', 'ai-platform', 'jobs', 'submit', 'custom',  
-          '--display-name=vertex-with-docker',        
-    #  args: ['beta', 'ai-platform', 'jobs', 'submit', 'training',          
-    #       'vertex-with-docker',
-          '--region=europe-west1',
-          '--config=config_vertex_cpu.yaml',
-          # '--module-name=my_module',
-          # '--package-path=path/to/my_module',
-          # '--job-dir=gs://mlops-project/jobs/vertex-with-docker',
-          # '--staging-bucket=gs://mlops-project/jobs/vertex-with-docker',
-          # '--runtime-version=2.3',
-          # '--python-version=3.7',
-          # '--master-image-uri=gcr.io/primal-graph-374308/trainer_timm_ln:latest',
-          '--project=primal-graph-374308']
-  #  - name: 'gcr.io/cloud-builders/docker'
-  #    args: ['ps']
-  #  - name: 'gcr.io/cloud-builders/docker'
-  #    args: ['cp', 'trainer_timm_ln:latest:/models', 'models']
-  #  - name: 'gcr.io/cloud-builders/gsutil'
-  #    args: ['cp', '-r', 'models/*', 'gs://mlops-project/models/']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['secret', 'versions', 'access', 'latest', '-n', 'primal-graph-374308']
+    secrets:
+      - kmsKeyName: projects/985975349365/secrets/WANDB_API_KEY
+        secretEnv: WANDB_API_KEY_SECRET
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--build-arg', WANDB_API_KEY=WANDB_API_KEY_SECRET '-t', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['ai', 'custom-jobs', 'create', 
+        '--display-name=vertex-with-docker',        
+        '--region=europe-west1',
+        '--config=config_vertex_cpu.yaml',
+        '--project=primal-graph-374308']

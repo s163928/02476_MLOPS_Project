@@ -14,6 +14,6 @@ WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
 
 # Set environment variables for wandb API key and project name
-ENV WANDB_API_KEY=23d639597d89bb9a9dabe3e76db7ae7cbc74641b
+ENV WANDB_API_KEY=${WANDB_API_KEY}
 
 ENTRYPOINT ["python", "-u", "src/models/train_LN_model.py"]
