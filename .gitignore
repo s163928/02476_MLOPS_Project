@@ -94,6 +94,10 @@ target/
 #Logging
 wandb
 
+# Hydra
+/outputs/**/**/data
+/outputs/**/**/models
+
 /flowers
 /predict
 /models/*

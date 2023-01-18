@@ -1,0 +1,7 @@
+---
+defaults:
+- model: lightning_timm
+- optimizer: default
+- wandb: default
+- experiment: default
+- datasets: flowers
