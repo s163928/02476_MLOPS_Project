@@ -80,7 +80,24 @@ test_environment:
 # PROJECT RULES                                                                 #
 #################################################################################
 
+deploy: requirements
+	gcloud run deploy infer-app \
+	--image=gcr.io/primal-graph-374308/infer_app:latest \
+	--allow-unauthenticated \
+	--service-account=cloud-build@primal-graph-374308.iam.gserviceaccount.com \
+	--memory=4Gi \
+	--region=europe-north1 \
+	--project=primal-graph-374308
 
+infer:
+	curl -X 'POST' \
+		$(shell gcloud run services describe infer-app \
+			--platform managed \
+			--region europe-north1  \
+			--format 'value(status.url)')/prediction/ \
+		-H 'accept: application/json' \
+		-H 'Content-Type: multipart/form-data' \
+		-F 'data=@${IMAGE};type=image/jpeg'
 
 #################################################################################
 # Self Documenting Commands                                                     #

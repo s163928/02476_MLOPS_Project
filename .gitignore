@@ -97,3 +97,5 @@ wandb
 /flowers
 /predict
 /models/*
+src/api/test.py
+test.dockerfile

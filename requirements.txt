@@ -19,5 +19,9 @@ dvc
 dvc[gdrive]
 
 dvc-gdrive
+fastapi
+uvicorn[standard]
 pytest
 pre-commit
+python-multipart
+pydantic
