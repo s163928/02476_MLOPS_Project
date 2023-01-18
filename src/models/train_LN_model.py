@@ -31,10 +31,10 @@ def main():
         model=model,
         datamodule=data)
 
-    upload_model()
+    # upload_model()
 
 def upload_model(model_name = 'model.ckpt',
-    model_path = "/models",
+    model_path = "./models",
     bucket_name = "/gcs/mlops-project/jobs/training/vertex-with-docker"):
 
     # Create a new client
@@ -43,23 +43,26 @@ def upload_model(model_name = 'model.ckpt',
     # Set the name of the new bucket
     bucket_name = bucket_name
 
-    # Create the new bucket
-    bucket = storage_client.create_bucket(bucket_name)
-    print("Bucket {} created.".format(bucket.name))
-
+    try:
+        # Create the new bucket
+        bucket = storage_client.create_bucket(bucket_name)
+        print("Bucket {} created.".format(bucket.name))
+    except Exception as e:
+        print(e)
+        bucket = storage_client.get_bucket(bucket_name)
+        
     # Upload a file to the new bucket
     blob = bucket.blob(model_name)
     blob.upload_from_filename(os.path.join(model_path, model_name))
     print("File uploaded to {}.".format(blob.name))
 
-
 if __name__ == "__main__":
     main()
 
     # copy model file after training to gcp-bucket
-    # gcp_bucket = '/gcs/mlops-project/jobs/vertex-with-docker'
-    # model_dir = '/models'
-    # shutil.copytree(model_dir, gcp_bucket)
-    # print("Model saved to GCP Bucket")
+    gcp_bucket = '/gcs/mlops-project/jobs/vertex-with-docker'
+    model_dir = '/models'
+    shutil.copytree(model_dir, gcp_bucket)
+    print("Model saved to GCP Bucket")
 
 
