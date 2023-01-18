@@ -22,9 +22,9 @@ steps:
 #   - kmsKeyName: projects/985975349365/secrets/WANDB_API_KEY
 #     secretEnv: 
 #       WANDB_API_KEY: WANDB_API_KEY_SECRET
-availableSecrets:
-  secretManager:
-    - versionName: projects/985975349365/secrets/WANDB_API_KEY
-      env: 'WANDB_API_KEY_SECRET'
+# availableSecrets:
+#   secretManager:
+#     - versionName: projects/985975349365/secrets/WANDB_API_KEY
+#       env: 'WANDB_API_KEY_SECRET'
 
 
