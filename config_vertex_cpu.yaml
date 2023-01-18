@@ -3,9 +3,6 @@ workerPoolSpecs:
    machineSpec:
       machineType: n1-highmem-2
    replicaCount: 1
-   # secrets:
-   #    - name: WANDB_API_KEY_SECRET
-   #      key: projects/985975349365/secrets/WANDB_API_KEY
    containerSpec:
       imageUri: gcr.io/primal-graph-374308/trainer_timm_ln:latest
       env:
