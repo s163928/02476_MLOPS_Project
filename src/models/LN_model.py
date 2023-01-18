@@ -1,6 +1,6 @@
 import torch.nn.functional as F
 from torch import nn, optim, utils, Tensor
-from torchmetrics.functional import accuracy
+# from torchmetrics.functional import accuracy
 import pytorch_lightning as pl
 import wandb
 import timm
@@ -31,18 +31,18 @@ class LN_model(pl.LightningModule):
         data, target = batch
         preds = self(data)
         loss = self.criterion(preds, target)
-        acc = accuracy(preds, target)
+        # acc = accuracy(preds, target)
         self.log("train_loss", loss)
-        self.log("train_accuracy", acc)
+        # self.log("train_accuracy", acc)
         return loss
 
     def validation_step(self, batch, batch_idx):
         data, target = batch
         preds = self(data)
         val_loss = self.criterion(preds, target)
-        val_acc = accuracy(preds, target)
+        # val_acc = accuracy(preds, target)
         self.log("val_loss", val_loss)
-        self.log("train_accuracy", val_acc)
+        # self.log("train_accuracy", val_acc)
 
     def predict_step(self, batch, batch_idx):
         preds = self(batch)
