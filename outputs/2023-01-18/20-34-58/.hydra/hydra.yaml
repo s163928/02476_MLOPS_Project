@@ -140,7 +140,7 @@ hydra:
     - path: ''
       schema: structured
       provider: schema
-    output_dir: /Users/invisible_man/Documents/DTU/Courses/MLOps/02476_MLOPS_Project/outputs/2023-01-18/20-18-22
+    output_dir: /Users/invisible_man/Documents/DTU/Courses/MLOps/02476_MLOPS_Project/outputs/2023-01-18/20-34-58
     choices:
       datasets: flowers
       experiment: default

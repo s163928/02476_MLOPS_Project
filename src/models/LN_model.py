@@ -8,8 +8,7 @@ import torch
 class LN_model(pl.LightningModule):
     def __init__(self, model_name = 'resnet18', pretrained = True, 
                 in_chans = 3, num_classes = 102, task = 'multiclass',
-                optimizer = 'adam', lr = 1e-3, loss = 'CrossEntropyLoss',
-                logger = 'wandb_loggger'):
+                optimizer = 'adam', lr = 1e-3, loss = 'CrossEntropyLoss'):
         super().__init__()
         self.model = timm.create_model(
             model_name = model_name,
@@ -19,7 +18,6 @@ class LN_model(pl.LightningModule):
 
         self.num_classes = num_classes
         self.task = task
-        self.wandb_logger = logger
 
         # optimizer parameters
         self.optimizer = optimizer
