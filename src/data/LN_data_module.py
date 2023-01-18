@@ -9,7 +9,6 @@ from torchvision import datasets, transforms
 
 transform = transforms.Compose([transforms.Resize((128, 128)), transforms.ToTensor()])
 
-
 class predictImageDataset(Dataset):
     def __init__(self, predict_data):
         if os.path.isdir(predict_data):
@@ -32,7 +31,6 @@ class predictImageDataset(Dataset):
 
     def __getitem__(self, idx):
         return self.predict_images[idx].float()
-
 
 class Flowers102DataModule(pl.LightningDataModule):
     def __init__(self, data_dir: str = "./data/raw", predict_data=None):
