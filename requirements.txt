@@ -25,3 +25,4 @@ pytest
 pre-commit
 python-multipart
 pydantic
+transformers
