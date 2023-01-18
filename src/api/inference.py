@@ -5,9 +5,17 @@ from google.cloud import storage
 from io import BytesIO
 
 storage_client = storage.Client()
+
+# Model bucket
 bucket = storage_client.get_bucket("mlops-project")
 blob = bucket.blob("jobs/vertex-with-docker/model.ckpt")
 checkpoint_data = blob.download_as_string()
+
+# Prediction database bucket
+bucket = storage_client.get_bucket("mlops-project")
+blob = bucket.blob("jobs/vertex-with-docker/model.ckpt")
+checkpoint_data = blob.download_as_string()
+
 
 app = FastAPI()
 
