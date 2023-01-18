@@ -1,7 +1,3 @@
-availableSecrets:
-# secretManager:
-#   - versionName: projects/985975349365/secrets/WANDB_API_KEY
-#     env: 'WANDB_API_KEY_SECRET'
 steps:
   # - name: 'gcr.io/cloud-builders/gcloud'
   #   args: ['secret', 'versions', 'access', 'latest', '-n', 'primal-graph-374308']
@@ -20,5 +16,9 @@ steps:
         '--region=europe-west1',
         '--config=config_vertex_cpu.yaml',
         '--project=primal-graph-374308']
+    availableSecrets:
+      secretManager:
+        - versionName: projects/985975349365/secrets/WANDB_API_KEY
+          env: 'WANDB_API_KEY_SECRET'
 
 
