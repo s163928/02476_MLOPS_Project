@@ -7,4 +7,4 @@ workerPoolSpecs:
       imageUri: gcr.io/primal-graph-374308/trainer_timm_ln:latest
       env:
         - name: WANDB_API_KEY
-          value: 23d639597d89bb9a9dabe3e76db7ae7cbc74641b
+          value: ${WANDB_API_KEY}

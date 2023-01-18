@@ -30,7 +30,7 @@ def main():
         model=model,
         datamodule=data)
 
-    # upload_model()
+    upload_model()
 
 def upload_model(model_name = 'model.ckpt',
     model_path = "./models",

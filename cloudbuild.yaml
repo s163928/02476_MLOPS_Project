@@ -1,15 +1,8 @@
 steps:
-  # - name: 'gcr.io/cloud-builders/gcloud'
-  #   args: ['secret', 'versions', 'access', 'latest', '-n', 'primal-graph-374308']
-  #   secrets:
-  #     - kmsKeyName: projects/985975349365/secrets/WANDB_API_KEY
-  #       secretEnv: WANDB_API_KEY_SECRET
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '--build-arg', WANDB_API_KEY=WANDB_API_KEY_SECRET , '-t', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest', '.']
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest', '.']
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest']
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   args: ['build', '-t', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest', '.']
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest']
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['ai', 'custom-jobs', 'create', 
         '--display-name=vertex-with-docker',        
