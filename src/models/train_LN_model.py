@@ -31,6 +31,8 @@ def main():
         model=model,
         datamodule=data)
 
+    upload_model()
+
 def upload_model(model_name = 'model.ckpt',
     model_path = "/models",
     bucket_name = "/gcs/mlops-project/jobs/training/vertex-with-docker"):
