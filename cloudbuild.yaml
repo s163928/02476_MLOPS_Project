@@ -11,13 +11,10 @@ steps:
         '--project=primal-graph-374308']
     env:
       - 'WANDB_API_KEY=23d639597d89bb9a9dabe3e76db7ae7cbc74641b'
-# secrets:
-#   - kmsKeyName: projects/985975349365/secrets/WANDB_API_KEY
-#     secretEnv: 
-#       WANDB_API_KEY: WANDB_API_KEY_SECRET
-# availableSecrets:
-#   secretManager:
-#     - versionName: projects/985975349365/secrets/WANDB_API_KEY
-#       env: 'WANDB_API_KEY_SECRET'
+    secretEnv: ['WANDB_API_KEY']
+availableSecrets:
+  secretManager:
+    - versionName: projects/985975349365/secrets/WANDB_API_KEY
+      env: 'WANDB_API_KEY'
 
 
