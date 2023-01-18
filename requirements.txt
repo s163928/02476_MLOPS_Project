@@ -25,3 +25,4 @@ uvicorn[standard]
 pytest
 pre-commit
 python-multipart
+pydantic

@@ -41,7 +41,9 @@ class Flowers102DataModule(pl.LightningDataModule):
         self.predict_data = predict_data
 
     def prepare_data(self):
-        # Download
+        # Download only if not prediction
+        if self.predict_data is not None:
+            return
         datasets.Flowers102(self.data_dir, "train", download=True)
         datasets.Flowers102(self.data_dir, "test", download=True)
 

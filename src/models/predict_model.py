@@ -20,7 +20,7 @@ def _predict(model, data):
 def predict(model: str, data=None):
     model = LN_model().load_from_checkpoint(model)
     datamodule = Flowers102DataModule(predict_data=data)
-    trainer = pl.Trainer(logger=pl.loggers.WandbLogger(project="flowers"))
+    trainer = pl.Trainer()
     preds = trainer.predict(model=model, datamodule=datamodule)
 
     return preds[0].tolist()
