@@ -26,13 +26,13 @@ class LogPredictionsCallback(Callback):
             captions = [f'Ground Truth: {y_i} - Prediction: {y_pred}' for y_i, y_pred in zip(y[:n], outputs[:n])]
             
             # Option 1: log images with `WandbLogger.log_image`
-            self.wandb_logger.log_image(key='sample_images', images=images, caption=captions)
+            # self.logger.log_image(key='sample_images', images=images, caption=captions)
 
 
             # Option 2: log predictions as a Table
             columns = ['image', 'ground truth', 'prediction']
             data = [[wandb.Image(x_i), y_i, y_pred] for x_i, y_i, y_pred in list(zip(x[:n], y[:n], outputs[:n]))]
-            self.wandb_logger.log_table(key='sample_table', columns=columns, data=data)
+            # self.logger.log_table(key='sample_table', columns=columns, data=data)
 
 
 @hydra.main(config_path="./../../configs/", config_name="defaults")
@@ -54,8 +54,7 @@ def main(cfg: omegaconf.DictConfig) -> None:
                     task = cfg.training.task,
                     optimizer = cfg.training.optimizer, 
                     lr = cfg.optimizer.config.learning_rate, 
-                    loss = cfg.training.loss,
-                    logger = wandb_logger)
+                    loss = cfg.training.loss)
     data = Flowers102DataModule()
     early_stopping = EarlyStopping(cfg.training.callbacks.EarlyStopping.monitor)
 
