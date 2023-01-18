@@ -32,7 +32,7 @@ def main():
         datamodule=data)
 
 def upload_model(model_name = 'model.ckpt',
-    model_path = "/models"
+    model_path = "/models",
     bucket_name = "/gcs/mlops-project/jobs/training/vertex-with-docker"):
 
     # Create a new client

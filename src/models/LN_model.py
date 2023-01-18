@@ -5,14 +5,22 @@ import wandb
 import timm
 
 class LN_model(pl.LightningModule):
-    def __init__(self, model_name='resnet18', pretrained=True, in_chans=3, num_classes=102):
+    def __init__(self, model_name='resnet18', pretrained=True, 
+    in_chans=3, num_classes=102,lr=1e-3, loss='CrossEntropyLoss'):
         super().__init__()
         self.model = timm.create_model(
             model_name=model_name,
             pretrained=pretrained,
             in_chans=in_chans,
             num_classes=num_classes)
-        self.criterion = nn.CrossEntropyLoss()
+        self.criterion = nn.CrossEntropyLoss() 
+        
+        # optimizer parameters
+        self.lr = lr
+
+        # save hyper-parameters to self.hparams (auto-logged by W&B)
+        self.save_hyperparameters()
+
         
     def forward(self, x):
         x = self.model(x)
@@ -36,4 +44,4 @@ class LN_model(pl.LightningModule):
         return preds.argmax(dim=-1)
 
     def configure_optimizers(self):
-        return optim.Adam(self.parameters(), lr=1e-3)
+        return optim.Adam(self.parameters(), lr=self.lr)
