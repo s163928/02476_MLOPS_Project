@@ -2,7 +2,6 @@ import pytorch_lightning as pl
 from src.models.LN_model import LN_model
 from src.data.LN_data_module import Flowers102DataModule
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
-from google.cloud import storage
 import shutil
 import os
 
@@ -35,34 +34,40 @@ def main():
 
 def upload_model(model_name = 'model.ckpt',
     model_path = "./models",
-    bucket_name = "/gcs/mlops-project/jobs/training/vertex-with-docker"):
+    bucket_name = "/gcs/mlops-project/jobs/training/vertex-with-docker",
+    mode = "vertex-job"):
 
-    # Create a new client
-    storage_client = storage.Client()
+    if mode!= "vertex-job":
+        from google.cloud import storage
 
-    # Set the name of the new bucket
-    bucket_name = bucket_name
+        # Create a new client
+        storage_client = storage.Client()
 
-    try:
-        # Create the new bucket
-        bucket = storage_client.create_bucket(bucket_name)
-        print("Bucket {} created.".format(bucket.name))
-    except Exception as e:
-        print(e)
-        bucket = storage_client.get_bucket(bucket_name)
-        
-    # Upload a file to the new bucket
-    blob = bucket.blob(model_name)
-    blob.upload_from_filename(os.path.join(model_path, model_name))
-    print("File uploaded to {}.".format(blob.name))
+        # Set the name of the new bucket
+        bucket_name = bucket_name
+
+        try:
+            # Create the new bucket
+            bucket = storage_client.create_bucket(bucket_name)
+            print("Bucket {} created.".format(bucket.name))
+        except Exception as e:
+            print(e)
+            bucket = storage_client.get_bucket(bucket_name)
+            
+        # Upload a file to the new bucket
+        blob = bucket.blob(model_name)
+        blob.upload_from_filename(os.path.join(model_path, model_name))
+        print("File uploaded to {}.".format(blob.name))
+    
+    else:
+        # copy model file after training to gcp-bucket
+        gcp_bucket = '/gcs/mlops-project/jobs/vertex-with-docker'
+        model_dir = '/models'
+        shutil.copy2(model_dir, gcp_bucket)
+        print("Model saved to GCP Bucket")
 
 if __name__ == "__main__":
     main()
 
-    # copy model file after training to gcp-bucket
-    gcp_bucket = '/gcs/mlops-project/jobs/vertex-with-docker'
-    model_dir = '/models'
-    shutil.copytree(model_dir, gcp_bucket)
-    print("Model saved to GCP Bucket")
 
 
