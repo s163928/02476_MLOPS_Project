@@ -114,7 +114,22 @@ If we ever forgot to add something to a requirements file, we could also use the
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+---
+From the cookiecutter template we are using the following folders
+* Data
+* Docs
+* Models
+* Reports
+* Src
+
+The data and models folder are empty on the github repo, but whenever we do DVC pull or get the data from GCP cloud storage it goes it the data folder. The model from vertex AI is placed in the models folder. In docs we have added a deploy function to the make file and all source code can be found in src.
+
+We have removed the following folders because we dud not have a use for it in our project.
+* Notebooks
+* References
+
+In addition we added a tests folder, .github and ‘wandb’ for unit testing, github workflow files and wandb.
+---
 
 ### Question 6
 
@@ -355,7 +370,9 @@ We used the following services:
 >
 > Answer:
 
---- question 21 fill here ---
+---
+![bucket](figures/GCP-Build.png)
+---
 
 ### Question 22
 
