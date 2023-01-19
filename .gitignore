@@ -92,7 +92,7 @@ target/
 /data
 
 #Logging
-wandb
+/wandb
 
 # Hydra
 /outputs/**/**/data
