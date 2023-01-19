@@ -231,7 +231,40 @@ In addition we added a tests folder, .github and ‘wandb’ for unit testing, g
 >
 > Answer:
 
---- question 12 fill here ---
+--- We have used hydra, omegaconf and wandb to configure and log the experiments. With hydra and omegaconf we have setup a `configs` directory that contains the sub-configuration files for various components of the code like `model, optimizer, training, wandb etc. ` We have specified a default configuration that is activated when we run the code normally (eg. the training code). To run a certain experiment we can specify it as follows after defining the experiment config file in `experiments`. 
+
+### Usage
+- Running with [`default`](configs/defaults.yaml) config:
+```bash
+$ python src/models/train_LN_model.py
+```
+
+- Hydra multirun on different experimental configurations as defined in [`experiment/`](configs/experiment):
+```bash
+$ python src/models/train_LN_model.py -m experiment=expt001,expt002
+```
+
+- An experiment configuration would look similar to,
+```yaml
+training:
+  task: 'multiclass'
+  model_output_name: 'model'
+  model_dir_name: 'models'
+  batch_size: 64
+  limit_train_batches: 0.20  # Limit to 20% of total size.
+  max_epochs: 5
+  optimizer: 'adam'
+  loss: 'CrossEntropy'
+  callbacks:
+    EarlyStopping:
+      monitor: 'val_loss'
+    ModelCheckpoint:
+      monitor: 'val_loss'
+  logging:
+    logger: 'wandb_logger'
+    log_every_n_steps: 1
+``` 
+Additional configuration can be specified for [`model`](configs/model) and [`optimizer`](configs/optimizer) separately as well. ---
 
 ### Question 13
 
@@ -246,7 +279,7 @@ In addition we added a tests folder, .github and ‘wandb’ for unit testing, g
 >
 > Answer:
 
---- question 13 fill here ---
+--- We will rely and make use of the config files for the different experiemnts. The experiemnt configuration file allows us to specify the specific config for the run as described above. Every time the experiment is run, the configuration and the results are logged (the model weights for instance) with the timestamp and name of the run. We can now run a reproducibilty test (to see if the weights match for instance) to see if we can reproduce the results. ---
 
 ### Question 14
 
@@ -350,7 +383,12 @@ Now,
 >
 > Answer:
 
---- Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with "machineSpec:machineType: n1-highmem-2" and the inference container was deployed in the Cloud Run. ---
+--- Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with 
+```yaml
+machineSpec:
+    machineType: n1-highmem-2
+```
+and the inference container was deployed in the Cloud Run. ---
 
 ### Question 19
 
