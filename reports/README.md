@@ -114,8 +114,7 @@ If we ever forgot to add something to a requirements file, we could also use the
 > *experiments.*
 > Answer:
 
----
-From the cookiecutter template we are using the following folders
+--- From the cookiecutter template we are using the following folders
 * Data
 * Docs
 * Models
@@ -128,8 +127,7 @@ We have removed the following folders because we dud not have a use for it in ou
 * Notebooks
 * References
 
-In addition we added a tests folder, .github and ‘wandb’ for unit testing, github workflow files and wandb.
----
+In addition we added a tests folder, .github and ‘wandb’ for unit testing, github workflow files and wandb. ---
 
 ### Question 6
 
@@ -313,8 +311,7 @@ In addition we added a tests folder, .github and ‘wandb’ for unit testing, g
 > Answer:
 
 
----
-We used the following services:
+--- We used the following services:
 
 * Cloud run – Used for running the api and the trained model. Request can be sent here and a prediction will be made
 * Cloud build – Creating the docker images and pushing it to the container registry.
@@ -322,8 +319,7 @@ We used the following services:
 * Cloud Storage (Bucket) – Used for storing training and validation data, together with the trained model that is generated from Vertex AI
 * Container registry – Used to store the docker images that we create
 * Tracer – Used to trace the time it takes from a request to our API to arrive and until it leaves.
-* IAM – Used for handling service account and user settings / privileges
----
+* IAM – Used for handling service account and user settings / privileges ---
 
 ### Question 18
 
@@ -338,9 +334,7 @@ We used the following services:
 >
 > Answer:
 
---- 
-Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with "machineSpec:machineType: n1-highmem-2" and the inference container was deployed in the Cloud Run.
----
+--- Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with "machineSpec:machineType: n1-highmem-2" and the inference container was deployed in the Cloud Run. ---
 
 ### Question 19
 
@@ -349,10 +343,8 @@ Our project didn't require the use of GCP Compute Engine directly. We instead re
 >
 > Answer:
 
----
-![bucket](figures/GCP-Bucket.png)
-![bucket](figures/GCP-Bucket-model.png)
----
+--- ![bucket](figures/GCP-Bucket.png)
+![bucket](figures/GCP-Bucket-model.png) ---
 
 ### Question 20
 
@@ -361,9 +353,7 @@ Our project didn't require the use of GCP Compute Engine directly. We instead re
 >
 > Answer:
 
----
-![bucket](figures/GCP-Registry.png)
----
+--- ![bucket](figures/GCP-Registry.png) ---
 
 ### Question 21
 
@@ -372,9 +362,7 @@ Our project didn't require the use of GCP Compute Engine directly. We instead re
 >
 > Answer:
 
----
-![bucket](figures/GCP-Build.png)
----
+--- ![bucket](figures/GCP-Build.png) ---
 
 ### Question 22
 
