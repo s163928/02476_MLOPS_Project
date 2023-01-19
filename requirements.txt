@@ -17,7 +17,7 @@ scipy
 timm
 dvc
 dvc[gdrive]
-
+dvc-gs
 dvc-gdrive
 fastapi
 uvicorn[standard]
