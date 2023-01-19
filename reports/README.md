@@ -172,7 +172,7 @@ In addition we added:
 >
 > Answer:
 
---- question 8 fill here ---
+--- The total code coverage of the unit test of our source code is 72%. The main reason for not reaching 100% is because our training script is wrapped as a function and we are not testing that directly. Instead we are testing all the individual functions within, ie. the model, training function etc. So we are confident that the results are correct, but we could not be completely sure the script would run without errors, if you did errornous changes to the training script. But these errors would easily be caught as soon as the training script would be used. If there was more time, we should have recoded the training script to make it testable. ---
 
 ### Question 9
 
