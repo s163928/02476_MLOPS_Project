@@ -131,7 +131,7 @@ We have removed the following folders because we dud not have a use for it in ou
 
 In addition we added:
 * [tests](./../tests)
-* [.github](./../.github) - for unit testing and github workflow files 
+* [.github](./../.github) - for unit testing and github workflow files
 * [wandb](./../wandb) - for wandb
 * [configs](./../configs) - for experiment configuration ---
 
@@ -253,7 +253,7 @@ An example of a triggered workflow can be seen here: [Web-Link](https://github.c
 >
 > Answer:
 
---- We have used hydra, omegaconf and wandb to configure and log the experiments. With hydra and omegaconf we have setup a `configs` directory that contains the sub-configuration files for various components of the code like `model, optimizer, training, wandb etc. ` We have specified a default configuration that is activated when we run the code normally (eg. the training code). To run a certain experiment we can specify it as follows after defining the experiment config file in `experiments`. 
+--- We have used hydra, omegaconf and wandb to configure and log the experiments. With hydra and omegaconf we have setup a `configs` directory that contains the sub-configuration files for various components of the code like `model, optimizer, training, wandb etc. ` We have specified a default configuration that is activated when we run the code normally (eg. the training code). To run a certain experiment we can specify it as follows after defining the experiment config file in `experiments`.
 
 ### Usage
 - Running with [`default`](./../configs/defaults.yaml) config:
@@ -285,7 +285,7 @@ training:
   logging:
     logger: 'wandb_logger'
     log_every_n_steps: 1
-``` 
+```
 Additional configuration can be specified for [`model`](./../configs/model) and [`optimizer`](./../configs/optimizer) separately as well. ---
 
 ### Question 13
@@ -320,9 +320,9 @@ Additional configuration can be specified for [`model`](./../configs/model) and 
 
 --- ![bucket](figures/WanDB-Metrices.png) As seen in the above image, we have tracked metrices like the train and validation loss and accuracy for the model over various runs. We can see the training loss decreasing gradually and corresponding increase in the accuracy.
 
-  
+
   ![bucket](figures/WanDB-HParams.png) As seen in this image we have also tracked model hyperparameters for the run. These are logged during the training process.
-  
+
   An attempt was also made to create a table illustrating the predictions during a validation run. However this was not succesfull, as we tried to implement a callback in the lightning module with the `on_validation_end_callback` which would plot the tables; but there was trouble passing the wandb logger to the lightning callback.---
 
 ### Question 15
@@ -338,7 +338,7 @@ Additional configuration can be specified for [`model`](./../configs/model) and 
 >
 > Answer:
 
---- For our project we have built basically two types of containers: 
+--- For our project we have built basically two types of containers:
 1. to train the data on our model and save it to a GCP bucket
 2. to deploy the inference app that gives the result whenever a user uploads an image
 
@@ -405,7 +405,7 @@ Now,
 >
 > Answer:
 
---- Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with 
+--- Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with
 ```yaml
 machineSpec:
     machineType: n1-highmem-2
@@ -454,7 +454,20 @@ and the inference container was deployed in the Cloud Run. ---
 >
 > Answer:
 
---- question 22 fill here ---
+---
+The very first test we for deploying the local, was done by saving a checkpoint locally, setting up FastAPI and a /predict/ endpoint that used the model checkpoint to make a prediction on an incoming image. After a few tries it succeed and we wrapped the model checkpoint and FastAPI into a docker container which was build using a github action workflow file. We got that up and running as well and moved on to using GCP. First of the model was trained with Vertex AI and saved in Cloud Storage (Bucket). A docker image was created and added to the GCP container registry. From here a make command was created to deploy the image on Cloud Run while fetching the trained model from Cloud Storage. To invoke the predict method of the API one can go to the url of the public endpoint or make a  curl command as the following;
+```bash
+curl -X 'POST' \
+$(shell gcloud run services describe infer-app \
+--platform managed \
+--region europe-north1 \
+--format 'value(status.url)')/prediction/ \
+-H 'accept: application/json' \
+-H 'Content-Type: multipart/form-data' \
+-F 'data=@${IMAGE};type=image/jpeg'
+```
+
+---
 
 ### Question 23
 
