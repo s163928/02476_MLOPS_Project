@@ -364,7 +364,10 @@ Now,
 >
 > Answer:
 
---- question 16 fill here ---
+---
+In this project we are working with many different python packages and we have to learn how to work with each and everyone. In this process bugs will of cause appear, however it is very different how these should be treated. Common ways for all team members to perform debugging is to first of all read the error or warning message. If it is not clear from this message what the mistake was, a google search  is made. It is very common that other people have had similar problems especially when being new to a package or framework. If it is still not clear how the bug should be fixed, the documentation for specif imports an be looked up and gone through. Maybe a package is deprecated or the guide that you are following is multiple years old and the packages have changed a bit.
+
+---
 
 ## Working in the cloud
 
