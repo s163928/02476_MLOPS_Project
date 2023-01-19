@@ -73,7 +73,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 3 fill here ---
+--- The framework we chose to work with was Pytorch Image Models (TIMM). The only functionality we ended up using was the pre-trained models. We started out by testing a few different versions, and ended up moving forward with the ResNet model with 18 layers. The ability to load a pre-trained model, that returned accurate prediction within few epochs of fine-tuning, made the project start out very quickly.  In a more model oriented project, we would very likely have tested out many more models, and in this case, the framework would also have been excellent for quick model-type comparison. ---
 
 ## Coding environment
 
@@ -202,7 +202,7 @@ In addition we added:
 >
 > Answer:
 
---- question 10 fill here ---
+--- We used DVC for version control of our raw data. It was stored in a GCP storage bucket and would then be pulled when needed for training. Since we didn’t change the raw data during the project and we further didn’t save any processed version of it, it didn’t improve the project in any practical sense. If we had more time we would have done version control of the trained model, since the model was replaced for every re-training. Furthermore, we probably should have done different kind of data processing for improving the model training, and in this case, it would have been essential to have version control with the different methods. ---
 
 ### Question 11
 
@@ -318,7 +318,7 @@ Additional configuration can be specified for [`model`](./../configs/model) and 
 >
 > Answer:
 
---- ![bucket](figures/WanDB-Metrices.png) As seen in the above image, we have tracked metrices like the train and validation loss and accuracy for the model over various runs. We can see the training loss decreasing gradually and corresponding increase in the accuracy.
+---  ![bucket](figures/WanDB-Metrices.png) As seen in the above image, we have tracked metrices like the train and validation loss and accuracy for the model over various runs. We can see the training loss decreasing gradually and corresponding increase in the accuracy.
 
 
   ![bucket](figures/WanDB-HParams.png) As seen in this image we have also tracked model hyperparameters for the run. These are logged during the training process.
@@ -488,7 +488,7 @@ $(shell gcloud run services describe infer-app \
 ---
 We did manage to implement monitoring both data drifting and system monitoring.
 
-For data drifting we ...
+For datadrifting we used the evidently AI framework. The project was image classification, so in order to capture features of the input images, we used the CLIP model from open ai. First the abstract features for all training data was extracted as a reference database, and then we set up prediction and feature logging in the inference api. The final datadrift monitoring was then implemented in the inference api with evidently.
 
 For system monitoring we went to the monitoring service in GCP and setup alerts for “Request Count” and “Billable Instance Time” to make sure that the our api was not being spammed with requests and thereby generating a very high cost.
 
@@ -536,7 +536,14 @@ In total 28.5 credits were spend during development. The service costing the mos
 >
 > Answer:
 
---- question 25 fill here ---
+--- ![bucket](figures/Architecture.png) 
+The high level architecture diagram for our project is as shown in the image above. We start developing our code on the local machine. Coding standards are enforces with `PEP8`. We have used `pyTorch-Lightning` for reducing the boilerplate code during model developement. To handle configurations, experiments, logging and reproducibility we have integrated `WanDB` and `Hydra` with Lightning. 
+
+Version control is enabled for Code and Data using `GitHub` and `DVC`. `Unit testing` and `linting` are part of the `GitHub Action Workflow`. 
+
+In `GCP` we have setup a cloud-project. In `CloudBuild` a `build trigger` is setup to monitor the GitHub Repo. Continuous Integration and Continuous Deployment is thus enabled with GitHub and GCP CloudBuild. The trigger builds the docker image and pushes it to the `Container Registry` for both the trainer:app and the inference:app. A `Vertex-CustomJob` is created using th e trainer-image and the trained model is saved to `GCP Storage` and the training logs can be now vizualised in `WanDB` Web UI for the project. 
+
+On the other hand, the inference:app is deployed in `Cloud Run` which loads the trained model from `GCP Storage` and makes it avaiable to the end-user through a `FastAPI` web app available at [Link to Web-App](https://infer-app-xvexekbjda-lz.a.run.app/docs). Here the user uploads an image and can test. `Traces` allow us to visualize and monitor the inference app and `Evidently-AI` allows us to monitor the data drift. With the feedbacks, we can continue to improve our code in an organized way.---
 
 ### Question 26
 
