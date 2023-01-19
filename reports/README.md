@@ -92,13 +92,15 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- We used a simple file called ‘requirements’ in order to keep track of dependencies. Every time someone  needed to do pip install something, they added it to the requirements file as the first thing. In order for someone else to get a complete copy of our development environment they would first have to create a virtual environment with either pipenv or Conda, where after they can run the following make command;
+--- We used a simple file called [`requirements`](requirements.txt) in order to keep track of dependencies. Every time someone needed to do `pip install` something, they added it to the requirements file as the first thing. In order for someone else to get a complete copy of our development environment they would first have to create a virtual environment with either `pipenv` or `Conda`, where after they can run the following make command:
 
-Make requirements
+```bash
+$ make requirements
+```
 
-Most make commands are setup to always run “make requirements” before the actual command which makes sure that everything is always installed before running a command.
+Most make commands are setup to always run `make requirements` before the actual command which makes sure that everything is always installed before running a command.
 
-If we ever forgot to add something to a requirements file, we could also use the package ‘pipreqs’ to auto generate the requirement file however it was never needed. ---
+If we ever forgot to add something to a requirements file, we could also use the package `pipreqs` to auto generate the requirement file however it was never needed. ---
 
 
 ### Question 5
@@ -115,19 +117,23 @@ If we ever forgot to add something to a requirements file, we could also use the
 > Answer:
 
 --- From the cookiecutter template we are using the following folders
-* Data
-* Docs
-* Models
-* Reports
-* Src
+* [data](/data)
+* [docs](/docs)
+* [models](/models)
+* [reports](/reports)
+* [src](/src)
 
-The data and models folder are empty on the github repo, but whenever we do DVC pull or get the data from GCP cloud storage it goes it the data folder. The model from vertex AI is placed in the models folder. In docs we have added a deploy function to the make file and all source code can be found in src.
+The data and models folder are empty on the github repo, but whenever we do `DVC pull` or get the data from GCP cloud storage it goes it the data folder. The model from vertex AI is placed in the models folder. In docs we have added a deploy function to the make file and all source code can be found in src.
 
 We have removed the following folders because we dud not have a use for it in our project.
 * Notebooks
 * References
 
-In addition we added a tests folder, .github and ‘wandb’ for unit testing, github workflow files and wandb. ---
+In addition we added:
+* [tests](/tests)
+* [.github](.github) - for unit testing and github workflow files 
+* [wandb](/wandb) - for wandb
+* [configs](/configs) - for experiment configuration ---
 
 ### Question 6
 
