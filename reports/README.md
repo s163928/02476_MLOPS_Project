@@ -92,13 +92,15 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- We used a simple file called ‘requirements’ in order to keep track of dependencies. Every time someone  needed to do pip install something, they added it to the requirements file as the first thing. In order for someone else to get a complete copy of our development environment they would first have to create a virtual environment with either pipenv or Conda, where after they can run the following make command;
+--- We used a simple file called [`requirements`](./../requirements.txt) in order to keep track of dependencies. Every time someone needed to do `pip install` something, they added it to the requirements file as the first thing. In order for someone else to get a complete copy of our development environment they would first have to create a virtual environment with either `pipenv` or `Conda`, where after they can run the following make command:
 
-Make requirements
+```bash
+$ make requirements
+```
 
-Most make commands are setup to always run “make requirements” before the actual command which makes sure that everything is always installed before running a command.
+Most make commands are setup to always run `make requirements` before the actual command which makes sure that everything is always installed before running a command.
 
-If we ever forgot to add something to a requirements file, we could also use the package ‘pipreqs’ to auto generate the requirement file however it was never needed. ---
+If we ever forgot to add something to a requirements file, we could also use the package `pipreqs` to auto generate the requirement file however it was never needed. ---
 
 
 ### Question 5
@@ -115,19 +117,23 @@ If we ever forgot to add something to a requirements file, we could also use the
 > Answer:
 
 --- From the cookiecutter template we are using the following folders
-* Data
-* Docs
-* Models
-* Reports
-* Src
+* [data](./../data)
+* [docs](./../docs)
+* [models](./../models)
+* [reports](./../reports)
+* [src](./../src)
 
-The data and models folder are empty on the github repo, but whenever we do DVC pull or get the data from GCP cloud storage it goes it the data folder. The model from vertex AI is placed in the models folder. In docs we have added a deploy function to the make file and all source code can be found in src.
+The data and models folder are empty on the github repo, but whenever we do `DVC pull` or get the data from GCP cloud storage it goes it the data folder. The model from vertex AI is placed in the models folder. In docs we have added a deploy function to the make file and all source code can be found in src.
 
 We have removed the following folders because we dud not have a use for it in our project.
 * Notebooks
 * References
 
-In addition we added a tests folder, .github and ‘wandb’ for unit testing, github workflow files and wandb. ---
+In addition we added:
+* [tests](./../tests)
+* [.github](./../.github) - for unit testing and github workflow files 
+* [wandb](./../wandb) - for wandb
+* [configs](./../configs) - for experiment configuration ---
 
 ### Question 6
 
@@ -247,7 +253,40 @@ An example of a triggered workflow can be seen here: [Web-Link](https://github.c
 >
 > Answer:
 
---- question 12 fill here ---
+--- We have used hydra, omegaconf and wandb to configure and log the experiments. With hydra and omegaconf we have setup a `configs` directory that contains the sub-configuration files for various components of the code like `model, optimizer, training, wandb etc. ` We have specified a default configuration that is activated when we run the code normally (eg. the training code). To run a certain experiment we can specify it as follows after defining the experiment config file in `experiments`. 
+
+### Usage
+- Running with [`default`](./../configs/defaults.yaml) config:
+```bash
+$ python src/models/train_LN_model.py
+```
+
+- Hydra multirun on different experimental configurations as defined in [`experiment/`](./../configs/experiment):
+```bash
+$ python src/models/train_LN_model.py -m experiment=expt001,expt002
+```
+
+- An experiment configuration would look similar to,
+```yaml
+training:
+  task: 'multiclass'
+  model_output_name: 'model'
+  model_dir_name: 'models'
+  batch_size: 64
+  limit_train_batches: 0.20  # Limit to 20% of total size.
+  max_epochs: 5
+  optimizer: 'adam'
+  loss: 'CrossEntropy'
+  callbacks:
+    EarlyStopping:
+      monitor: 'val_loss'
+    ModelCheckpoint:
+      monitor: 'val_loss'
+  logging:
+    logger: 'wandb_logger'
+    log_every_n_steps: 1
+``` 
+Additional configuration can be specified for [`model`](./../configs/model) and [`optimizer`](./../configs/optimizer) separately as well. ---
 
 ### Question 13
 
@@ -262,7 +301,7 @@ An example of a triggered workflow can be seen here: [Web-Link](https://github.c
 >
 > Answer:
 
---- question 13 fill here ---
+--- We will rely and make use of the config files for the different experiemnts. The experiemnt configuration file allows us to specify the specific config for the run as described above. Every time the experiment is run, the configuration and the results are logged (the model weights for instance) with the timestamp and name of the run. We can now run a reproducibilty test (to see if the weights match for instance) to see if we can reproduce the results. ---
 
 ### Question 14
 
@@ -279,7 +318,12 @@ An example of a triggered workflow can be seen here: [Web-Link](https://github.c
 >
 > Answer:
 
---- question 14 fill here ---
+--- ![bucket](figures/WanDB-Metrices.png) As seen in the above image, we have tracked metrices like the train and validation loss and accuracy for the model over various runs. We can see the training loss decreasing gradually and corresponding increase in the accuracy.
+
+  
+  ![bucket](figures/WanDB-HParams.png) As seen in this image we have also tracked model hyperparameters for the run. These are logged during the training process.
+  
+  An attempt was also made to create a table illustrating the predictions during a validation run. However this was not succesfull, as we tried to implement a callback in the lightning module with the `on_validation_end_callback` which would plot the tables; but there was trouble passing the wandb logger to the lightning callback.---
 
 ### Question 15
 
@@ -294,7 +338,18 @@ An example of a triggered workflow can be seen here: [Web-Link](https://github.c
 >
 > Answer:
 
---- question 15 fill here ---
+--- For our project we have built basically two types of containers: 
+1. to train the data on our model and save it to a GCP bucket
+2. to deploy the inference app that gives the result whenever a user uploads an image
+
+The containers can be built locally or using cloudbuild. We have relied on both methods and pushed the images to GCP Container Registry. [Trainer-Image](https://console.cloud.google.com/gcr/images/primal-graph-374308/global/infer_app?project=primal-graph-374308) and [Inference-Image](https://console.cloud.google.com/gcr/images/primal-graph-374308/global/trainer_timm_ln?project=primal-graph-374308) can be found here.
+Now,
+- the training container is used to create a vertex-job as follows,
+  ![bucket](figures/GCP-CloudBuild-Vertex.png)
+  ![bucket](figures/GCP-Vertex-Config.png)
+- the inference container is deployed to cloud run by the following command: `make deploy` which runs the below,
+![bucket](figures/GCP-Run-Deploy.png)
+ ---
 
 ### Question 16
 
@@ -350,7 +405,12 @@ An example of a triggered workflow can be seen here: [Web-Link](https://github.c
 >
 > Answer:
 
---- Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with "machineSpec:machineType: n1-highmem-2" and the inference container was deployed in the Cloud Run. ---
+--- Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with 
+```yaml
+machineSpec:
+    machineType: n1-highmem-2
+```
+and the inference container was deployed in the Cloud Run. ---
 
 ### Question 19
 
