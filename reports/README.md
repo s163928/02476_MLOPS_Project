@@ -318,7 +318,7 @@ Additional configuration can be specified for [`model`](./../configs/model) and 
 >
 > Answer:
 
---- ![bucket](figures/WanDB-Metrices.png) As seen in the above image, we have tracked metrices like the train and validation loss and accuracy for the model over various runs. We can see the training loss decreasing gradually and corresponding increase in the accuracy.
+---  ![bucket](figures/WanDB-Metrices.png) As seen in the above image, we have tracked metrices like the train and validation loss and accuracy for the model over various runs. We can see the training loss decreasing gradually and corresponding increase in the accuracy.
 
 
   ![bucket](figures/WanDB-HParams.png) As seen in this image we have also tracked model hyperparameters for the run. These are logged during the training process.
@@ -533,7 +533,14 @@ In total 28.5 credits were spend during development. The service costing the mos
 >
 > Answer:
 
---- question 25 fill here ---
+--- ![bucket](figures/Architecture.png) 
+The high level architecture diagram for our project is as shown in the image above. We start developing our code on the local machine. Coding standards are enforces with `PEP8`. We have used `pyTorch-Lightning` for reducing the boilerplate code during model developement. To handle configurations, experiments, logging and reproducibility we have integrated `WanDB` and `Hydra` with Lightning. 
+
+Version control is enabled for Code and Data using `GitHub` and `DVC`. `Unit testing` and `linting` are part of the `GitHub Action Workflow`. 
+
+In `GCP` we have setup a cloud-project. In `CloudBuild` a `build trigger` is setup to monitor the GitHub Repo. Continuous Integration and Continuous Deployment is thus enabled with GitHub and GCP CloudBuild. The trigger builds the docker image and pushes it to the `Container Registry` for both the trainer:app and the inference:app. A `Vertex-CustomJob` is created using th e trainer-image and the trained model is saved to `GCP Storage` and the training logs can be now vizualised in `WanDB` Web UI for the project. 
+
+On the other hand, the inference:app is deployed in `Cloud Run` which loads the trained model from `GCP Storage` and makes it avaiable to the end-user through a `FastAPI` web app available at [Link to Web-App](https://infer-app-xvexekbjda-lz.a.run.app/docs). Here the user uploads an image and can test. `Traces` allow us to visualize and monitor the inference app and `Evidently-AI` allows us to monitor the data drift. With the feedbacks, we can continue to improve our code in an organized way.---
 
 ### Question 26
 
