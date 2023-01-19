@@ -99,14 +99,6 @@ def upload_model(model_name = 'model.ckpt',
 
         # Set the name of the new bucket
         bucket_name = bucket_name
-        limit_train_batches=0.20,  # Limit to 20% of total size.
-        max_epochs=5,
-        logger=pl.loggers.WandbLogger(project="flowers"),
-        log_every_n_steps=1,
-        callbacks=[early_stopping, checkpoint_callback],
-    )
-    trainer.fit(model=model, datamodule=data)
-
         try:
             # Create the new bucket
             bucket = storage_client.create_bucket(bucket_name)
