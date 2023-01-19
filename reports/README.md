@@ -157,7 +157,7 @@ In addition we added:
 >
 > Answer:
 
---- question 7 fill here ---
+--- 11 tests were implemented ---
 
 ### Question 8
 
