@@ -7,7 +7,8 @@ from io import BytesIO
 from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 import torch
-
+from urllib.request import urlopen
+import json
 import pandas as pd
 from evidently.report import Report
 from evidently.metric_preset import (
@@ -16,49 +17,25 @@ from evidently.metric_preset import (
     TargetDriftPreset,
 )
 
-
-from opentelemetry import trace
-
-from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
-
-# from opentelemetry.propagate import set_global_textmap
-# from opentelemetry.propagators.cloud_trace_propagator import (
-#    CloudTraceFormatPropagator,
-# )
-
 NUM_FEATURES = 100
 PREDICTION_BUCKET = "prediction_database"
 DATABASE_FILE = "prediction_database.csv"
 
-# set up tracing and open telemetry
-provider = TracerProvider()
-trace.set_tracer_provider(provider)
-
-cloud_trace_exporter = CloudTraceSpanExporter(
-    project_id="primal-graph-374308",
-)
-provider.add_span_processor(
-    # BatchSpanProcessor buffers spans and sends them in batches in a
-    # background thread. The default parameters are sensible, but can be
-    # tweaked to optimize your performance
-    BatchSpanProcessor(cloud_trace_exporter)
-)
-
-tracer = trace.get_tracer(__name__)
-
 storage_client = storage.Client()
 
+# Get model
 bucket = storage_client.get_bucket("mlops-project")
 blob = bucket.blob("jobs/vertex-with-docker/model.ckpt")
 checkpoint_data = blob.download_as_bytes()
 
-app = FastAPI(title="FastAPI")
-FastAPIInstrumentor.instrument_app(app)
+# Get labels
+url = "https://raw.githubusercontent.com/bdevnani3/oxfordflowers102-label-name-mapping/main/mapping.json"
+response = urlopen(url)
+json_response = json.loads(response.read())
+translate = [x for x in json_response.keys()]
 
-# set_global_textmap(CloudTraceFormatPropagator())
+
+app = FastAPI(title="FastAPI")
 
 
 def add_to_database(
@@ -113,28 +90,26 @@ def root():
 
 @app.post("/prediction/")
 async def predict(background_tasks: BackgroundTasks, data: UploadFile = File(...)):
-    with tracer.start_as_current_span("img-read") as img_read_span:
-        img_read_span.set_attribute("img-filename", data.filename)
-        img_data = await data.read()
 
-    with tracer.start_as_current_span("predict-result") as predit_span:
-        pred = model_predict(data=img_data, model=BytesIO(checkpoint_data))[0]
-        predit_span.set_attribute("prediction", pred)
-        response = {
-            "input": data,
-            "pred": pred,
-            "message": HTTPStatus.OK.phrase,
-            "status-code": HTTPStatus.OK,
-        }
+    img_data = await data.read()
+
+    pred = model_predict(data=img_data, model=BytesIO(checkpoint_data))[0]
+    response = {
+        "input": data,
+        "class": pred,
+        "class_name": translate[pred],
+        "message": HTTPStatus.OK.phrase,
+        "status-code": HTTPStatus.OK,
+    }
 
     background_tasks.add_task(
         add_to_database,
-        img_data,
-        pred,
-        storage_client,
-        PREDICTION_BUCKET,
-        DATABASE_FILE,
-        NUM_FEATURES,
+        img_data=img_data,
+        pred=pred,
+        storage_client=storage_client,
+        bucket_name=PREDICTION_BUCKET,
+        database_file=DATABASE_FILE,
+        num_features=NUM_FEATURES,
     )
 
     return response
