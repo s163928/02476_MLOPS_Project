@@ -1,11 +1,21 @@
 from http import HTTPStatus
 from fastapi import FastAPI, UploadFile, File, BackgroundTasks
+from fastapi.responses import HTMLResponse
 from src.models.predict_model import predict as model_predict
 from google.cloud import storage
 from io import BytesIO
 from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 import torch
+
+# import pandas as pd
+from evidently.report import Report
+from evidently.metric_preset import (
+    DataDriftPreset,
+    DataQualityPreset,
+    TargetDriftPreset,
+)
+
 
 from opentelemetry import trace
 
@@ -128,3 +138,30 @@ async def predict(background_tasks: BackgroundTasks, data: UploadFile = File(...
     )
 
     return response
+
+
+@app.get("/monitoring/", response_class=HTMLResponse)
+async def monitoring():
+    bucket = storage_client.get_bucket("prediction_database")
+    blob = bucket.blob("prediction_database.csv")
+    prediction_data = blob.download_as_bytes()
+    blob = bucket.blob("reference_database.csv")
+    reference_data = blob.download_as_bytes()
+
+    data_drift_report = Report(
+        metrics=[
+            DataDriftPreset(),
+            DataQualityPreset(),
+            TargetDriftPreset(),
+        ]
+    )
+
+    data_drift_report.run(
+        current_data=prediction_data, reference_data=reference_data, column_mapping=None
+    )
+    data_drift_report.save_html("monitoring.html")
+
+    with open("monitoring.html", "r", encoding="utf-8") as f:
+        html_content = f.read()
+
+    return HTMLResponse(content=html_content, status_code=200)

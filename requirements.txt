@@ -37,3 +37,5 @@ opentelemetry-proto==1.15.0
 opentelemetry-sdk==1.15.0
 opentelemetry-semantic-conventions==0.36b0
 opentelemetry-util-http==0.36b0
+pandas
+evidently
