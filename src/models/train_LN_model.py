@@ -8,6 +8,7 @@ import hydra
 # from hydra.utils import dir as dir_utils
 import omegaconf
 import pprint
+import shutil
 
 class LogPredictionsCallback(Callback):
     
