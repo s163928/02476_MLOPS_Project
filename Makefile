@@ -80,7 +80,7 @@ test_environment:
 # PROJECT RULES                                                                 #
 #################################################################################
 
-deploy: requirements
+deploy:
 	gcloud run deploy infer-app \
 	--image=gcr.io/primal-graph-374308/infer_app:latest \
 	--allow-unauthenticated \
