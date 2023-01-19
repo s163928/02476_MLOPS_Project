@@ -73,7 +73,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 3 fill here ---
+--- The framework we chose to work with was Pytorch Image Models (TIMM). The only functionality we ended up using was the pre-trained models. We started out by testing a few different versions, and ended up moving forward with the ResNet model with 18 layers. The ability to load a pre-trained model, that returned accurate prediction within few epochs of fine-tuning, made the project start out very quickly.  In a more model oriented project, we would very likely have tested out many more models, and in this case, the framework would also have been excellent for quick model-type comparison. ---
 
 ## Coding environment
 
@@ -202,7 +202,7 @@ In addition we added:
 >
 > Answer:
 
---- question 10 fill here ---
+--- We used DVC for version control of our raw data. It was stored in a GCP storage bucket and would then be pulled when needed for training. Since we didn’t change the raw data during the project and we further didn’t save any processed version of it, it didn’t improve the project in any practical sense. If we had more time we would have done version control of the trained model, since the model was replaced for every re-training. Furthermore, we probably should have done different kind of data processing for improving the model training, and in this case, it would have been essential to have version control with the different methods. ---
 
 ### Question 11
 
@@ -485,7 +485,7 @@ $(shell gcloud run services describe infer-app \
 ---
 We did manage to implement monitoring both data drifting and system monitoring.
 
-For data drifting we ...
+For datadrifting we used the evidently AI framework. The project was image classification, so in order to capture features of the input images, we used the CLIP model from open ai. First the abstract features for all training data was extracted as a reference database, and then we set up prediction and feature logging in the inference api. The final datadrift monitoring was then implemented in the inference api with evidently.
 
 For system monitoring we went to the monitoring service in GCP and setup alerts for “Request Count” and “Billable Instance Time” to make sure that the our api was not being spammed with requests and thereby generating a very high cost.
 
