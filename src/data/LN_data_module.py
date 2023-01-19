@@ -1,14 +1,13 @@
-from glob import glob
 from io import BytesIO
 import pytorch_lightning as pl
 import torch
 import os
 from PIL import Image
+from glob import glob
 from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import datasets, transforms
 
 transform = transforms.Compose([transforms.Resize((128, 128)), transforms.ToTensor()])
-
 
 class predictImageDataset(Dataset):
     def __init__(self, predict_data):

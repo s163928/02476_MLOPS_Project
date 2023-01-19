@@ -45,6 +45,7 @@ def check():  # noqa: C901
             if "##" in q:
                 q = q.split("##")[0]
             answers.append(q)
+
     answers.append(per_question[-1])
     answers = answers[1:]  # remove first section
     answers = [ans.strip("\n") for ans in answers]
@@ -81,7 +82,7 @@ def check():  # noqa: C901
         partial(length_constraints, min=100, max=200),
         partial(length_constraints, min=100, max=200),
         partial(length_constraints, min=50, max=100),
-        no_constraints,
+        partial(length_constraints, min=50, max=100),
         partial(length_constraints, min=100, max=200),
         partial(length_constraints, min=100, max=200),
         partial(length_constraints, min=100, max=200),
@@ -98,7 +99,7 @@ def check():  # noqa: C901
         partial(length_constraints, min=100, max=200),
         partial(length_constraints, min=100, max=200),
         partial(length_constraints, min=50, max=200),
-        partial(length_constraints, min=50, max=100),
+        partial(length_constraints, min=100, max=200),
         partial(image_constrains, min=1, max=2),
         partial(image_constrains, min=1, max=1),
         partial(image_constrains, min=1, max=1),
@@ -120,7 +121,7 @@ def check():  # noqa: C901
             "Number of answers are different from the expected 27. Have you filled out every field?"
         )
 
-    for i, (ans, const) in enumerate(zip(answers, question_constrains)):
+    for i, (ans, const) in enumerate(zip(answers, question_constrains), start=1):
         const(ans, i)
 
 

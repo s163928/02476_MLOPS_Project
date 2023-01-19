@@ -1,0 +1,4 @@
+model_name: 'resnet18'
+pretrained: True
+in_chans: 3
+num_classes : 102

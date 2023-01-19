@@ -1,0 +1,28 @@
+# @package _global_
+# defaults:
+#   - override /optimizer: adagrad
+
+# model:
+#   kernel_size: 3
+#   l1_size: 128
+#   l2_size: 64
+#   l3_size: 32
+#   last_size: 32
+#   activation: "gelu"
+
+training:
+  task: 'multiclass'
+  model_output_name: 'model'
+  model_dir_name: 'models'
+  limit_train_batches: 0.20  # Limit to 20% of total size.
+  max_epochs: 5
+  optimizer: 'adam'
+  loss: 'CrossEntropy'
+  callbacks:
+    EarlyStopping:
+      monitor: 'val_loss'
+    ModelCheckpoint:
+      monitor: 'val_loss'
+  logging:
+    logger: 'wandb_logger'
+    log_every_n_steps: 1
