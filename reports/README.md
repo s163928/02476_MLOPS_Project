@@ -212,7 +212,23 @@ In addition we added a tests folder, .github and ‘wandb’ for unit testing, g
 >
 > Answer:
 
---- question 11 fill here ---
+---
+We have organized our CI into only one file which is for unit testing. However at the beginning of the project we were planing to have 3 files. One for linting (flake8, black, etc.) , one for unit test and one for create a docker image. We scraped having a linting workflow file because we setup a precommit hook would not allow a commit to made without having the standard of flake8 and styling of black.
+
+Before we began working with GCP we setup a workflow file for creating a docker image, however when we started moving the project over to GCP, we realized that it would be easier to create the image in GCP instead of Github actions.
+
+For now we have decided only to run the unit test on ubuntu-latest, 12.x with python version 3.8. The workflow file can easily be expanded to run on multiple OS such as macos-latest, 12.x and windows-latest, 12.x. An example of how to add it can be seen here:
+
+```py
+    strategy:
+        matrix:
+            os: [ubuntu-latest, macos-latest, windows-latest]
+```
+
+The same goes for running different version of python such as 3.9. However if this was a bigger project, it would be nice to have these test running as well.
+An example of a triggered workflow can be seen here: [Web-Link](https://github.com/s163928/02476_MLOPS_Project/actions)
+
+---
 
 ## Running code and tracking experiments
 
@@ -393,7 +409,16 @@ In addition we added a tests folder, .github and ‘wandb’ for unit testing, g
 >
 > Answer:
 
---- question 23 fill here ---
+---
+We did manage to implement monitoring both data drifting and system monitoring.
+
+For data drifting we ...
+
+For system monitoring we went to the monitoring service in GCP and setup alerts for “Request Count” and “Billable Instance Time” to make sure that the our api was not being spammed with requests and thereby generating a very high cost.
+
+Further more we tried to implement OpenTelemetry to monitor time spend when per request our api was receiving. We got it working locally so that it sends data to the GCP Trace service, however we did not manage to make it report to the Trace service when running in Cloud Run.
+
+---
 
 ### Question 24
 
@@ -407,7 +432,14 @@ In addition we added a tests folder, .github and ‘wandb’ for unit testing, g
 >
 > Answer:
 
---- question 24 fill here ---
+---
+* s163928 - 22.5 credits (This account was used for the project)
+* s212919 - 3 credits
+* s120356 - 3 credits
+
+In total 28.5 credits were spend during development. The service costing the most for exercises only were th compute enigine. Including the project Cloud Storage used 19 credits alone. On a second plase is the compute engine and the last services almost did not spend anything
+
+---
 
 ## Overall discussion of project
 
@@ -442,7 +474,16 @@ In addition we added a tests folder, .github and ‘wandb’ for unit testing, g
 >
 > Answer:
 
---- question 26 fill here ---
+---
+The biggest challenges in this project all centered around working with GCP. In this project, working locally allows quick deployment of FastAPI and training of the model. Especially because the data can be stored along side the code and does not need to be stored online.
+
+When the application has to go in GCP a docker image first have to be created where after it should be pushed to the GCP container registry. Once the image has been pushed it should be deployed and only when a VM have been created and setup the docker image, can we test if everything works as intended. During this process one thing we offen had issues with was permissions to the different service accounts and our own accounts. This was often a problem when trying to get the data using dvc.
+
+Reading and understanding documentation on GCP was also a challenge because it seems that some of the packages being used in the official documentation is deprecated. This was the case for setting up OpenTelemetry with GCP trace.
+
+The most frustrating about working with GCP is that it seems like they sometimes hide all the important information in the log files. E.g. we had a docker image that failed to deploy in Cloud Run. We went to the logs for information and got 2 errors with no real indication of the error. We then had to read through all the log entries and in the middle of “nothing” we found a “connection failed” message. From this we could narrow down the error and fix it. We ended up doing this kind of “log fishing” a good amount of times.
+
+---
 
 ### Question 27
 
@@ -459,4 +500,11 @@ In addition we added a tests folder, .github and ‘wandb’ for unit testing, g
 >
 > Answer:
 
---- question 27 fill here ---
+---
+* Student s163928 was in charge of github workflow, docker image, unit test and OpenTelemetry
+* Student s212919 was in charge of hydra, Vertex AI, could build, docker container regestry for trainer model.
+* Student s120356 was in charge of DVC data storage, google run, data drift, wandb, ligtning framework.
+
+All members contributed to finding data and setting up the model and the minumum one team member had to review someone else changes before a pull request could be merged with the main branch.
+
+---
