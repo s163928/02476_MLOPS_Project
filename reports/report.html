@@ -1,0 +1,434 @@
+<h1>Exam template for 02476 Machine Learning Operations</h1>
+<p>This is the report template for the exam. Please only remove the text formatted as with three dashes in front and behind
+like:</p>
+<p><code>--- question 1 fill here ---</code></p>
+<p>where  you instead should add your answers. Any other changes may have unwanted consequences when your report is auto
+generated in the end of the course. For questions where you are asked to include images, start by adding the image to
+the <code>figures</code> subfolder (please only use <code>.png</code>, <code>.jpg</code> or <code>.jpeg</code>) and then add the following code in your answer:</p>
+<p><code>markdown
+![my_image](figures/&lt;image&gt;.&lt;extension&gt;)</code></p>
+<p>In addition to this markdown file, we also provide the <code>report.py</code> script that provides two utility functions:</p>
+<p>Running:</p>
+<p><code>bash
+python report.py html</code></p>
+<p>will generate an <code>.html</code> page of your report. After deadline for answering this template, we will autoscrape
+everything in this <code>reports</code> folder and then use this utility to generate an <code>.html</code> page that will be your serve
+as your final handin.</p>
+<p>Running</p>
+<p><code>bash
+python report.py check</code></p>
+<p>will check your answers in this template against the constrains listed for each question e.g. is your answer too
+short, too long, have you included an image when asked to.</p>
+<p>For both functions to work it is important that you do not rename anything. The script have two dependencies that can
+be installed with <code>pip install click markdown</code>.</p>
+<h2>Group information</h2>
+<h3>Question 1</h3>
+<blockquote>
+<p><strong>Enter the group number you signed up on <learn.inside.dtu.dk></strong></p>
+<p>Answer:</p>
+</blockquote>
+<p>26</p>
+<h3>Question 2</h3>
+<blockquote>
+<p><strong>Enter the study number for each member in the group</strong></p>
+<p>Example:</p>
+<p><em>sXXXXXX, sXXXXXX, sXXXXXX</em></p>
+<p>Answer:</p>
+</blockquote>
+<p><em>s163928, s212919, s120356</em></p>
+<h3>Question 3</h3>
+<blockquote>
+<p><strong>What framework did you choose to work with and did it help you complete the project?</strong></p>
+<p>Answer length: 100-200 words.</p>
+<p>Example:
+<em>We used the third-party framework ... in our project. We used functionality ... and functionality ... from the</em>
+<em>package to do ... and ... in our project</em>.</p>
+<p>Answer:</p>
+</blockquote>
+<p>The framework we chose to work with was Pytorch Image Models (TIMM). The only functionality we ended up using from the framework was the pre-trained models. We started out by testing a few different versions, and ended up moving forward with the ResNet model with 18 layers. The ability to load a pre-trained model, that returned accurate prediction within few epochs of fine-tuning, made the project start out very quickly.  In a more model oriented project, we would very likely have tested out many more models, and in this case, the framework would also have been excellent for quick model type comparison.</p>
+<h2>Coding environment</h2>
+<blockquote>
+<p>In the following section we are interested in learning more about you local development environment.</p>
+</blockquote>
+<h3>Question 4</h3>
+<blockquote>
+<p><strong>Explain how you managed dependencies in your project? Explain the process a new team member would have to go</strong>
+<strong>through to get an exact copy of your environment.</strong></p>
+<p>Answer length: 100-200 words</p>
+<p>Example:
+<em>We used ... for managing our dependencies. The list of dependencies was auto-generated using ... . To get a</em>
+<em>complete copy of our development enviroment, one would have to run the following commands</em></p>
+<p>Answer:</p>
+</blockquote>
+<p>We used a simple file called <a href="./../requirements.txt"><code>requirements</code></a> in order to keep track of dependencies. Every time someone needed to do <code>pip install</code> something, they added it to the requirements file as the first thing. In order for someone else to get a complete copy of our development environment they would first have to create a virtual environment with either <code>pipenv</code> or <code>Conda</code>, where after they can run the following make command:</p>
+<p><code>bash
+$ make requirements</code></p>
+<p>Most make commands are setup to always run <code>make requirements</code> before the actual command which makes sure that everything is always installed before running a command.</p>
+<p>If we ever forgot to add something to a requirements file, we could also use the package <code>pipreqs</code> to auto generate the requirement file however it was never needed.</p>
+<h3>Question 5</h3>
+<blockquote>
+<p><strong>We expect that you initialized your project using the cookiecutter template. Explain the overall structure of your</strong>
+<strong>code. Did you fill out every folder or only a subset?</strong></p>
+<p>Answer length: 100-200 words</p>
+<p>Example:
+<em>From the cookiecutter template we have filled out the ... , ... and ... folder. We have removed the ... folder</em>
+<em>because we did not use any ... in our project. We have added an ... folder that contains ... for running our</em>
+<em>experiments.</em>
+Answer:</p>
+</blockquote>
+<p>From the cookiecutter template we are using the following folders
+* <a href="./../data">data</a>
+* <a href="./../docs">docs</a>
+* <a href="./../models">models</a>
+* <a href="./../reports">reports</a>
+* <a href="./../src">src</a></p>
+<p>The data and models folder are empty on the github repo, but whenever we do <code>DVC pull</code> or get the data from GCP cloud storage it goes it the data folder. The model from vertex AI is placed in the models folder. In docs we have added a deploy function to the make file and all source code can be found in src.</p>
+<p>We have removed the following folders because we dud not have a use for it in our project.
+* Notebooks
+* References</p>
+<p>In addition we added:
+* <a href="./../tests">tests</a>
+* <a href="./../.github">.github</a> - for unit testing and github workflow files
+* <a href="./../wandb">wandb</a> - for wandb
+* <a href="./../configs">configs</a> - for experiment configuration</p>
+<h3>Question 6</h3>
+<blockquote>
+<p><strong>Did you implement any rules for code quality and format? Additionally, explain with your own words why these</strong>
+<strong>concepts matters in larger projects.</strong></p>
+<p>Answer length: 50-100 words.</p>
+<p>Answer:</p>
+</blockquote>
+<p>We implemented the pre-commit package and setup checks for trailing whitespace, end-of-file lines, yaml files, large files, flake8, isort and black. What this means is that all off these checks are being run when trying to commit changes. This is important because it not only makes the code easier to read but also to maintain. Especially checks for unused- and over complex lines of code help making it easy to maintain. Keeping a consistent style throughout the code base also makes collaboration easier in the sense that everyone is not writing code in their own unique style.</p>
+<h2>Version control</h2>
+<blockquote>
+<p>In the following section we are interested in how version control was used in your project during development to
+corporate and increase the quality of your code.</p>
+</blockquote>
+<h3>Question 7</h3>
+<blockquote>
+<p><strong>How many tests did you implement?</strong></p>
+<p>Answer:</p>
+</blockquote>
+<p>We implemented 11 tests in total. 6 of the test were for testing that the data was being loaded and processed correctly. The last 5 test were used to test that the model was setup corretly in order for the lightning framework to do the training of the model correctly.</p>
+<h3>Question 8</h3>
+<blockquote>
+<p><strong>What is the total code coverage (in percentage) of your code? If you code had an code coverage of 100% (or close</strong>
+<strong>to), would you still trust it to be error free? Explain you reasoning.</strong></p>
+<p><strong>Answer length: 100-200 words.</strong></p>
+<p>Example:
+<em>The total code coverage of code is X%, which includes all our source code. We are far from 100% coverage of our </em><em>
+</em>code and even if we were then...*</p>
+<p>Answer:</p>
+</blockquote>
+<p>The total code coverage of the unit test of our source code is 72%. The main reason for not reaching 100% is because our training script is wrapped as a function and we are not testing that directly. Instead we are testing all the individual functions within, ie. the model, training function etc. So we are confident that the results are correct, but we could not be completely sure the script would run without errors, if you did errornous changes to the training script. But these errors would easily be caught as soon as the training script would be used. If there was more time, we should have recoded the training script to make it testable.</p>
+<h3>Question 9</h3>
+<blockquote>
+<p><strong>Did you workflow include using branches and pull requests? If yes, explain how. If not, explain how branches and</strong>
+<strong>pull request can help improve version control.</strong></p>
+<p>Answer length: 100-200 words.</p>
+<p>Example:
+<em>We made use of both branches and PRs in our project. In our group, each member had an branch that they worked on in</em>
+<em>addition to the main branch. To merge code we ...</em></p>
+<p>Answer:</p>
+</blockquote>
+<p>We made use of both branches and PRs in our project. When a feature need to be created e.g. setting up  unit test a branch was made with that name. The feature would then be developed by one or more people from the group, where a PR would be made. The PR would require 1 reviewer and the unit test workflow to pass before allowing a merge request to be made into the main branch. By using this structure we avoided merge conflicts and made sure that all our test were successful and thereby not pushing broken code to the main branch.</p>
+<h3>Question 10</h3>
+<blockquote>
+<p><strong>Did you use DVC for managing data in your project? If yes, then how did it improve your project to have version</strong>
+<strong>control of your data. If no, explain a case where it would be beneficial to have version control of your data.</strong></p>
+<p>Answer length: 100-200 words.</p>
+<p>Example:
+<em>We did make use of DVC in the following way: ... . In the end it helped us in ... for controlling ... part of our</em>
+<em>pipeline</em></p>
+<p>Answer:</p>
+</blockquote>
+<p>We used DVC for version control of our raw data. It was stored in a GCP storage bucket and would then be pulled when needed for training. Since we didn’t change the raw data during the project and we further didn’t save any processed version of it, it didn’t improve the project in any practical sense. If we had more time we would have done version control of the trained model, since the model was replaced for every re-training. Furthermore, we probably should have done different kind of data processing for improving the model training, and in this case, it would have been essential to have version control with the different methods.</p>
+<h3>Question 11</h3>
+<blockquote>
+<p><strong>Discuss you continues integration setup. What kind of CI are you running (unittesting, linting, etc.)? Do you test</strong>
+<strong>multiple operating systems, python version etc. Do you make use of caching? Feel free to insert a link to one of</strong>
+<strong>your github actions workflow.</strong></p>
+<p>Answer length: 200-300 words.</p>
+<p>Example:
+<em>We have organized our CI into 3 separate files: one for doing ..., one for running ... testing and one for running</em>
+<em>... . In particular for our ..., we used ... .An example of a triggered workflow can be seen here: <weblink></em></p>
+<p>Answer:</p>
+</blockquote>
+<p>We have organized our CI into only one file which is for unit testing. However at the beginning of the project we were planing to have 3 files. One for linting (flake8, black, etc.) , one for unit test and one for create a docker image. We scraped having a linting workflow file because we setup a precommit hook would not allow a commit to made without having the standard of flake8 and styling of black.</p>
+<p>Before we began working with GCP we setup a workflow file for creating a docker image, however when we started moving the project over to GCP, we realized that it would be easier to create the image in GCP instead of Github actions.</p>
+<p>For now we have decided only to run the unit test on ubuntu-latest, 12.x with python version 3.8. The workflow file can easily be expanded to run on multiple OS such as macos-latest, 12.x and windows-latest, 12.x. An example of how to add it can be seen here:</p>
+<p><code>py
+    strategy:
+        matrix:
+            os: [ubuntu-latest, macos-latest, windows-latest]</code></p>
+<p>The same goes for running different version of python such as 3.9. However if this was a bigger project, it would be nice to have these test running as well.
+An example of a triggered workflow can be seen here: <a href="https://github.com/s163928/02476_MLOPS_Project/actions">Web-Link</a></p>
+<h2>Running code and tracking experiments</h2>
+<blockquote>
+<p>In the following section we are interested in learning more about the experimental setup for running your code and
+especially the reproducibility of your experiments.</p>
+</blockquote>
+<h3>Question 12</h3>
+<blockquote>
+<p><strong>How did you configure experiments? Did you make use of config files? Explain with coding examples of how you would</strong>
+<strong>run a experiment.</strong></p>
+<p>Answer length: 50-100 words.</p>
+<p>Example:
+<em>We used a simple argparser, that worked in the following way: python my_script.py --lr 1e-3 --batch_size 25</em></p>
+<p>Answer:</p>
+</blockquote>
+<p>We have used hydra, omegaconf and wandb to configure and log the experiments. With hydra and omegaconf we have setup a <code>configs</code> directory that contains the sub-configuration files for various components of the code like <code>model, optimizer, training, wandb etc.</code> We have specified a default configuration that is activated when we run the code normally (eg. the training code). To run a certain experiment we can specify it as follows after defining the experiment config file in <code>experiments</code>.</p>
+<h3>Usage</h3>
+<ul>
+<li>
+<p>Running with <a href="./../configs/defaults.yaml"><code>default</code></a> config:
+<code>bash
+$ python src/models/train_LN_model.py</code></p>
+</li>
+<li>
+<p>Hydra multirun on different experimental configurations as defined in <a href="./../configs/experiment"><code>experiment/</code></a>:
+<code>bash
+$ python src/models/train_LN_model.py -m experiment=expt001,expt002</code></p>
+</li>
+<li>
+<p>An experiment configuration would look similar to,
+<code>yaml
+training:
+  task: 'multiclass'
+  model_output_name: 'model'
+  model_dir_name: 'models'
+  batch_size: 64
+  limit_train_batches: 0.20  # Limit to 20% of total size.
+  max_epochs: 5
+  optimizer: 'adam'
+  loss: 'CrossEntropy'
+  callbacks:
+    EarlyStopping:
+      monitor: 'val_loss'
+    ModelCheckpoint:
+      monitor: 'val_loss'
+  logging:
+    logger: 'wandb_logger'
+    log_every_n_steps: 1</code>
+Additional configuration can be specified for <a href="./../configs/model"><code>model</code></a> and <a href="./../configs/optimizer"><code>optimizer</code></a> separately as well.</p>
+</li>
+</ul>
+<h3>Question 13</h3>
+<blockquote>
+<p><strong>Reproducibility of experiments are important. Related to the last question, how did you secure that no information</strong>
+<strong>is lost when running experiments and that your experiments are reproducible?</strong></p>
+<p>Answer length: 100-200 words.</p>
+<p>Example:
+<em>We made use of config files. Whenever an experiment is run the following happens: ... . To reproduce an experiment</em>
+<em>one would have to do ...</em></p>
+<p>Answer:</p>
+</blockquote>
+<p>We will rely and make use of the config files for the different experiemnts. The experiemnt configuration file allows us to specify the specific config for the run as described above. Every time the experiment is run, the configuration and the results are logged (the model weights for instance) with the timestamp and name of the run. We can now run a reproducibilty test (to see if the weights match for instance) to see if we can reproduce the results. The alternative to having a configuration file would be e.g. a word or excel file were you could log all the information. You would then have to manually input it and it would be really hard to work with.</p>
+<h3>Question 14</h3>
+<blockquote>
+<p><strong>Upload 1 to 3 screenshots that show the experiments that you have done in W&amp;B (or another experiment tracking</strong>
+<strong>service of your choice). This may include loss graphs, logged images, hyperparameter sweeps etc. You can take</strong>
+<strong>inspiration from <a href="figures/wandb.png">this figure</a>. Explain what metrics you are tracking and why they are</strong>
+<strong>important.</strong></p>
+<p>Answer length: 200-300 words + 1 to 3 screenshots.</p>
+<p>Example:
+<em>As seen in the first image when have tracked ... and ... which both inform us about ... in our experiments.</em>
+<em>As seen in the second image we are also tracking ... and ...</em></p>
+<p>Answer:</p>
+</blockquote>
+<p><img alt="bucket" src="figures/WanDB-Metrices.png" /> As seen in the above image, we have tracked metrices like the train and validation loss and accuracy for the model over various runs. We can see the training loss decreasing gradually and corresponding increase in the accuracy.</p>
+<p><img alt="bucket" src="figures/WanDB-HParams.png" /> As seen in this image we have also tracked model hyperparameters for the run. These are logged during the training process. WanDB also allows us to save the model checkpoints during the run and thereby having versions of the model in the model registry.</p>
+<p>An attempt was also made to create a table illustrating the predictions during a validation run. However this was not succesfull, as we tried to implement a callback in the lightning module with the <code>on_validation_end_callback</code> which would plot the tables; but there was trouble passing the wandb logger to the lightning callback.</p>
+<p>Tracking the loss is important as it allows us to understand and evaluate the training performance. If our loss does not show any variation with epochs, we must try to understand the reasons for the same utilising our domain knowledge of the data and also based on our understanding of the model architecture. Following this we can tune the paramters, run multiple expirements, perform hyperparamter sweeps and finally select the best model. </p>
+<h3>Question 15</h3>
+<blockquote>
+<p><strong>Docker is an important tool for creating containerized applications. Explain how you used docker in your</strong>
+<strong>experiments? Include how you would run your docker images and include a link to one of your docker files.</strong></p>
+<p>Answer length: 100-200 words.</p>
+<p>Example:
+<em>For our project we developed several images: one for training, inference and deployment. For example to run the</em>
+<em>training docker image: <code>docker run trainer:latest lr=1e-3 batch_size=64</code>. Link to docker file: <weblink></em></p>
+<p>Answer:</p>
+</blockquote>
+<p>For our project we have built basically two types of containers:
+1. to train the data on our model and save it to a GCP bucket
+2. to deploy the inference app that gives the result whenever a user uploads an image</p>
+<p>The containers can be built locally or using cloudbuild. We have relied on both methods and pushed the images to GCP Container Registry. <a href="https://console.cloud.google.com/gcr/images/primal-graph-374308/global/infer_app?project=primal-graph-374308">Trainer-Image</a> and <a href="https://console.cloud.google.com/gcr/images/primal-graph-374308/global/trainer_timm_ln?project=primal-graph-374308">Inference-Image</a> can be found here.
+Now,
+- the training container is used to create a vertex-job as follows,
+  <img alt="bucket" src="figures/GCP-CloudBuild-Vertex.png" />
+  <img alt="bucket" src="figures/GCP-Vertex-Config.png" />
+- the inference container is deployed to cloud run by the following command: <code>make deploy</code> which runs the below,
+<img alt="bucket" src="figures/GCP-Run-Deploy.png" /></p>
+<h3>Question 16</h3>
+<blockquote>
+<p><strong>When running into bugs while trying to run your experiments, how did you perform debugging? Additionally, did you</strong>
+<strong>try to profile your code or do you think it is already perfect?</strong></p>
+<p>Answer length: 100-200 words.</p>
+<p>Example:
+<em>Debugging method was dependent on group member. Some just used ... and others used ... . We did a single profiling</em>
+<em>run of our main code at some point that showed ...</em></p>
+<p>Answer:</p>
+</blockquote>
+<p>In this project we are working with many different python packages and we have to learn how to work with each and everyone. In this process bugs will of cause appear, however it is very different how these should be treated. Common ways for all team members to perform debugging is to first of all read the error or warning message. If it is not clear from this message what the mistake was, a google search  is made. It is very common that other people have had similar problems especially when being new to a package or framework. If it is still not clear how the bug should be fixed, the documentation for specif imports an be looked up and gone through. Maybe a package is deprecated or the guide that you are following is multiple years old and the packages have changed a bit.</p>
+<h2>Working in the cloud</h2>
+<blockquote>
+<p>In the following section we would like to know more about your experience when developing in the cloud.</p>
+</blockquote>
+<h3>Question 17</h3>
+<blockquote>
+<p><strong>List all the GCP services that you made use of in your project and shortly explain what each service does?</strong></p>
+<p>Answer length: 50-200 words.</p>
+<p>Example:
+<em>We used the following two services: Engine and Bucket. Engine is used for... and Bucket is used for...</em></p>
+<p>Answer:</p>
+</blockquote>
+<p>We used the following services:</p>
+<ul>
+<li>Cloud run – Used for running the api and the trained model. Request can be sent here and a prediction will be made</li>
+<li>Cloud build – Creating the docker images and pushing it to the container registry.</li>
+<li>Vertex AI – Used for training the model</li>
+<li>Cloud Storage (Bucket) – Used for storing training and validation data, together with the trained model that is generated from Vertex AI</li>
+<li>Container registry – Used to store the docker images that we create</li>
+<li>Tracer – Used to trace the time it takes from a request to our API to arrive and until it leaves.</li>
+<li>IAM – Used for handling service account and user settings / privileges</li>
+</ul>
+<h3>Question 18</h3>
+<blockquote>
+<p><strong>The backbone of GCP is the Compute engine. Explained how you made use of this service and what type of VMs</strong>
+<strong>you used?</strong></p>
+<p>Answer length: 50-100 words.</p>
+<p>Example:
+<em>We used the compute engine to run our ... . We used instances with the following hardware: ... and we started the</em>
+<em>using a custom container: ...</em></p>
+<p>Answer:</p>
+</blockquote>
+<p>Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with
+<code>yaml
+machineSpec:
+    machineType: n1-highmem-2</code>
+and the inference container was deployed in the Cloud Run.</p>
+<h3>Question 19</h3>
+<blockquote>
+<p><strong>Insert 1-2 images of your GCP bucket, such that we can see what data you have stored in it.</strong>
+<strong>You can take inspiration from <a href="figures/bucket.png">this figure</a>.</strong></p>
+<p>Answer:</p>
+</blockquote>
+<p><img alt="bucket" src="figures/GCP-Bucket.png" />
+<img alt="bucket" src="figures/GCP-Bucket-model.png" /></p>
+<h3>Question 20</h3>
+<blockquote>
+<p><strong>Upload one image of your GCP container registry, such that we can see the different images that you have stored.</strong>
+<strong>You can take inspiration from <a href="figures/registry.png">this figure</a>.</strong></p>
+<p>Answer:</p>
+</blockquote>
+<p><img alt="bucket" src="figures/GCP-Registry.png" /></p>
+<h3>Question 21</h3>
+<blockquote>
+<p><strong>Upload one image of your GCP cloud build history, so we can see the history of the images that have been build in</strong>
+<strong>your project. You can take inspiration from <a href="figures/build.png">this figure</a>.</strong></p>
+<p>Answer:</p>
+</blockquote>
+<p><img alt="bucket" src="figures/GCP-Build.png" /></p>
+<h3>Question 22</h3>
+<blockquote>
+<p><strong>Did you manage to deploy your model, either in locally or cloud? If not, describe why. If yes, describe how and</strong>
+<strong>preferably how you invoke your deployed service?</strong></p>
+<p>Answer length: 100-200 words.</p>
+<p>Example:
+<em>For deployment we wrapped our model into application using ... . We first tried locally serving the model, which</em>
+<em>worked. Afterwards we deployed it in the cloud, using ... . To invoke the service an user would call</em>
+<em><code>curl -X POST -F "file=@file.json"&lt;weburl&gt;</code></em></p>
+<p>Answer:</p>
+</blockquote>
+<p>The very first test we for deploying the local, was done by saving a checkpoint locally, setting up FastAPI and a /predict/ endpoint that used the model checkpoint to make a prediction on an incoming image. After a few tries it succeed and we wrapped the model checkpoint and FastAPI into a docker container which was build using a github action workflow file. We got that up and running as well and moved on to using GCP. First of the model was trained with Vertex AI and saved in Cloud Storage (Bucket). A docker image was created and added to the GCP container registry. From here a make command was created to deploy the image on Cloud Run while fetching the trained model from Cloud Storage. To invoke the predict method of the API one can go to the url of the public endpoint or make a  curl command as the following;
+<code>bash
+curl -X 'POST' \
+$(shell gcloud run services describe infer-app \
+--platform managed \
+--region europe-north1 \
+--format 'value(status.url)')/prediction/ \
+-H 'accept: application/json' \
+-H 'Content-Type: multipart/form-data' \
+-F 'data=@${IMAGE};type=image/jpeg'</code></p>
+<h3>Question 23</h3>
+<blockquote>
+<p><strong>Did you manage to implement monitoring of your deployed model? If yes, explain how it works. If not, explain how</strong>
+<strong>monitoring would help the longevity of your application.</strong></p>
+<p>Answer length: 100-200 words.</p>
+<p>Example:
+<em>We did not manage to implement monitoring. We would like to have monitoring implemented such that over time we could</em>
+<em>measure ... and ... that would inform us about this ... behaviour of our application.</em></p>
+<p>Answer:</p>
+</blockquote>
+<p>We did manage to implement monitoring both data drifting and system monitoring.</p>
+<p>For datadrifting we used the evidently AI framework. The project was image classification, so in order to capture features of the input images, we used the CLIP model from open ai. First the abstract features for all training data was extracted as a reference database, and then we set up prediction and feature logging in the inference api. The final datadrift monitoring was then implemented in the inference api with evidently.</p>
+<p>For system monitoring we went to the monitoring service in GCP and setup alerts for “Request Count” and “Billable Instance Time” to make sure that the our api was not being spammed with requests and thereby generating a very high cost.</p>
+<p>Further more we tried to implement OpenTelemetry to monitor time spend when per request our api was receiving. We got it working locally so that it sends data to the GCP Trace service, however we did not manage to make it report to the Trace service when running in Cloud Run.</p>
+<h3>Question 24</h3>
+<blockquote>
+<p><strong>How many credits did you end up using during the project and what service was most expensive?</strong></p>
+<p>Answer length: 25-100 words.</p>
+<p>Example:
+<em>Group member 1 used ..., Group member 2 used ..., in total ... credits was spend during development. The service</em>
+<em>costing the most was ... due to ...</em></p>
+<p>Answer:</p>
+</blockquote>
+<ul>
+<li>s163928 - 22.5 credits (This account was used for the project)</li>
+<li>s212919 - 3 credits</li>
+<li>s120356 - 3 credits</li>
+</ul>
+<p>In total 28.5 credits were spend during development. The service costing the most for exercises only were th compute enigine. Including the project Cloud Storage used 19 credits alone. On a second plase is the compute engine and the last services almost did not spend anything</p>
+<h2>Overall discussion of project</h2>
+<blockquote>
+<p>In the following section we would like you to think about the general structure of your project.</p>
+</blockquote>
+<h3>Question 25</h3>
+<blockquote>
+<p><strong>Include a figure that describes the overall architecture of your system and what services that you make use of.</strong>
+<strong>You can take inspiration from <a href="figures/overview.png">this figure</a>. Additionally in your own words, explain the</strong>
+<strong>overall steps in figure.</strong></p>
+<p>Answer length: 200-400 words</p>
+<p>Example:
+*
+<em>The starting point of the diagram is our local setup, where we integrated ... and ... and ... into our code.</em>
+<em>Whenever we commit code and puch to github, it auto triggers ... and ... . From there the diagram shows ...</em></p>
+<p>Answer:</p>
+</blockquote>
+<p><img alt="bucket" src="figures/Architecture.png" />
+The high level architecture diagram for our project is as shown in the image above. We start developing our code on the local machine. Coding standards are enforces with <code>PEP8</code>. We have used <code>pyTorch-Lightning</code> for reducing the boilerplate code during model developement. To handle configurations, experiments, logging and reproducibility we have integrated <code>WanDB</code> and <code>Hydra</code> with Lightning.</p>
+<p>Version control is enabled for Code and Data using <code>GitHub</code> and <code>DVC</code>. <code>Unit testing</code> and <code>linting</code> are part of the <code>GitHub Action Workflow</code>.</p>
+<p>In <code>GCP</code> we have setup a cloud-project. In <code>CloudBuild</code> a <code>build trigger</code> is setup to monitor the GitHub Repo. Continuous Integration and Continuous Deployment is thus enabled with GitHub and GCP CloudBuild. The trigger builds the docker image and pushes it to the <code>Container Registry</code> for both the trainer:app and the inference:app. A <code>Vertex-CustomJob</code> is created using th e trainer-image and the trained model is saved to <code>GCP Storage</code> and the training logs can be now vizualised in <code>WanDB</code> Web UI for the project.</p>
+<p>On the other hand, the inference:app is deployed in <code>Cloud Run</code> which loads the trained model from <code>GCP Storage</code> and makes it avaiable to the end-user through a <code>FastAPI</code> web app available at <a href="https://infer-app-xvexekbjda-lz.a.run.app/docs">Link to Web-App</a>. Here the user uploads an image and can test. <code>Traces</code> allow us to visualize and monitor the inference app and <code>Evidently-AI</code> allows us to monitor the data drift. With the feedbacks, we can continue to improve our code in an organized way.</p>
+<h3>Question 26</h3>
+<blockquote>
+<p><strong>Discuss the overall struggles of the project. Where did you spend most time and what did you do to overcome these</strong>
+<strong>challenges?</strong></p>
+<p>Answer length: 200-400 words.</p>
+<p>Example:
+<em>The biggest challenges in the project was using ... tool to do ... . The reason for this was ...</em></p>
+<p>Answer:</p>
+</blockquote>
+<p>The biggest challenges in this project all centered around working with GCP. In this project, working locally allows quick deployment of FastAPI and training of the model. Especially because the data can be stored along side the code and does not need to be stored online.</p>
+<p>When the application has to go in GCP a docker image first have to be created where after it should be pushed to the GCP container registry. Once the image has been pushed it should be deployed and only when a VM have been created and setup the docker image, can we test if everything works as intended. During this process one thing we offen had issues with was permissions to the different service accounts and our own accounts. This was often a problem when trying to get the data using dvc.</p>
+<p>Reading and understanding documentation on GCP was also a challenge because it seems that some of the packages being used in the official documentation is deprecated. This was the case for setting up OpenTelemetry with GCP trace.</p>
+<p>The most frustrating about working with GCP is that it seems like they sometimes hide all the important information in the log files. E.g. we had a docker image that failed to deploy in Cloud Run. We went to the logs for information and got 2 errors with no real indication of the error. We then had to read through all the log entries and in the middle of “nothing” we found a “connection failed” message. From this we could narrow down the error and fix it. We ended up doing this kind of “log fishing” a good amount of times.</p>
+<h3>Question 27</h3>
+<blockquote>
+<p><strong>State the individual contributions of each team member. This is required information from DTU, because we need to</strong>
+<strong>make sure all members contributed actively to the project</strong></p>
+<p>Answer length: 50-200 words.</p>
+<p>Example:
+<em>Student sXXXXXX was in charge of developing of setting up the initial cookie cutter project and developing of the</em>
+<em>docker containers for training our applications.</em>
+<em>Student sXXXXXX was in charge of training our models in the cloud and deploying them afterwards.</em>
+<em>All members contributed to code by...</em></p>
+<p>Answer:</p>
+</blockquote>
+<ul>
+<li>Student s163928 was in charge of github workflow, docker image, unit test and OpenTelemetry</li>
+<li>Student s212919 was in charge of hydra, Vertex AI, could build, docker container regestry for trainer model.</li>
+<li>Student s120356 was in charge of DVC data storage, google run, data drift, wandb, ligtning framework.</li>
+</ul>
+<p>All members contributed to finding data and setting up the model and the minumum one team member had to review someone else changes before a pull request could be merged with the main branch.</p>

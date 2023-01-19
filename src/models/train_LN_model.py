@@ -1,16 +1,12 @@
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
-
 from src.data.LN_data_module import Flowers102DataModule
 from src.models.LN_model import LN_model
 
-from src.data.LN_data_module import Flowers102DataModule
-from src.models.LN_model import LN_model
 from pytorch_lightning.callbacks import Callback
 import wandb
 import pytorch_lightning as pl
 import hydra
-# from hydra.utils import dir as dir_utils
 import omegaconf
 import pprint
 import shutil
@@ -84,7 +80,6 @@ def main(cfg: omegaconf.DictConfig) -> None:
         max_epochs = cfg.training.max_epochs,
         logger = wandb_logger,
         log_every_n_steps = cfg.training.logging.log_every_n_steps,
-        # callbacks = [early_stopping, checkpoint_callback],
         callbacks=[early_stopping, checkpoint_callback, log_predictions_callback]
     )
     trainer.fit(model=model, datamodule=data)
@@ -104,6 +99,13 @@ def upload_model(model_name = 'model.ckpt',
 
         # Set the name of the new bucket
         bucket_name = bucket_name
+        limit_train_batches=0.20,  # Limit to 20% of total size.
+        max_epochs=5,
+        logger=pl.loggers.WandbLogger(project="flowers"),
+        log_every_n_steps=1,
+        callbacks=[early_stopping, checkpoint_callback],
+    )
+    trainer.fit(model=model, datamodule=data)
 
         try:
             # Create the new bucket

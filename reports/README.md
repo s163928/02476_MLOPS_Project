@@ -49,7 +49,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 1 fill here ---
+26
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -60,7 +60,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 2 fill here ---
+*s163928, s212919, s120356*
 
 ### Question 3
 > **What framework did you choose to work with and did it help you complete the project?**
@@ -73,7 +73,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 3 fill here ---
+The framework we chose to work with was Pytorch Image Models (TIMM). The only functionality we ended up using from the framework was the pre-trained models. We started out by testing a few different versions, and ended up moving forward with the ResNet model with 18 layers. The ability to load a pre-trained model, that returned accurate prediction within few epochs of fine-tuning, made the project start out very quickly.  In a more model oriented project, we would very likely have tested out many more models, and in this case, the framework would also have been excellent for quick model type comparison.
 
 ## Coding environment
 
@@ -92,7 +92,16 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 4 fill here ---
+We used a simple file called [`requirements`](./../requirements.txt) in order to keep track of dependencies. Every time someone needed to do `pip install` something, they added it to the requirements file as the first thing. In order for someone else to get a complete copy of our development environment they would first have to create a virtual environment with either `pipenv` or `Conda`, where after they can run the following make command:
+
+```bash
+$ make requirements
+```
+
+Most make commands are setup to always run `make requirements` before the actual command which makes sure that everything is always installed before running a command.
+
+If we ever forgot to add something to a requirements file, we could also use the package `pipreqs` to auto generate the requirement file however it was never needed.
+
 
 ### Question 5
 
@@ -107,7 +116,24 @@ be installed with `pip install click markdown`.
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+From the cookiecutter template we are using the following folders
+* [data](./../data)
+* [docs](./../docs)
+* [models](./../models)
+* [reports](./../reports)
+* [src](./../src)
+
+The data and models folder are empty on the github repo, but whenever we do `DVC pull` or get the data from GCP cloud storage it goes it the data folder. The model from vertex AI is placed in the models folder. In docs we have added a deploy function to the make file and all source code can be found in src.
+
+We have removed the following folders because we dud not have a use for it in our project.
+* Notebooks
+* References
+
+In addition we added:
+* [tests](./../tests)
+* [.github](./../.github) - for unit testing and github workflow files
+* [wandb](./../wandb) - for wandb
+* [configs](./../configs) - for experiment configuration
 
 ### Question 6
 
@@ -118,7 +144,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 6 fill here ---
+We implemented the pre-commit package and setup checks for trailing whitespace, end-of-file lines, yaml files, large files, flake8, isort and black. What this means is that all off these checks are being run when trying to commit changes. This is important because it not only makes the code easier to read but also to maintain. Especially checks for unused- and over complex lines of code help making it easy to maintain. Keeping a consistent style throughout the code base also makes collaboration easier in the sense that everyone is not writing code in their own unique style.
 
 ## Version control
 
@@ -131,7 +157,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 7 fill here ---
+We implemented 11 tests in total. 6 of the test were for testing that the data was being loaded and processed correctly. The last 5 test were used to test that the model was setup corretly in order for the lightning framework to do the training of the model correctly.
 
 ### Question 8
 
@@ -146,7 +172,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 8 fill here ---
+The total code coverage of the unit test of our source code is 72%. The main reason for not reaching 100% is because our training script is wrapped as a function and we are not testing that directly. Instead we are testing all the individual functions within, ie. the model, training function etc. So we are confident that the results are correct, but we could not be completely sure the script would run without errors, if you did errornous changes to the training script. But these errors would easily be caught as soon as the training script would be used. If there was more time, we should have recoded the training script to make it testable.
 
 ### Question 9
 
@@ -161,7 +187,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 9 fill here ---
+We made use of both branches and PRs in our project. When a feature need to be created e.g. setting up  unit test a branch was made with that name. The feature would then be developed by one or more people from the group, where a PR would be made. The PR would require 1 reviewer and the unit test workflow to pass before allowing a merge request to be made into the main branch. By using this structure we avoided merge conflicts and made sure that all our test were successful and thereby not pushing broken code to the main branch.
 
 ### Question 10
 
@@ -176,7 +202,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 10 fill here ---
+We used DVC for version control of our raw data. It was stored in a GCP storage bucket and would then be pulled when needed for training. Since we didn’t change the raw data during the project and we further didn’t save any processed version of it, it didn’t improve the project in any practical sense. If we had more time we would have done version control of the trained model, since the model was replaced for every re-training. Furthermore, we probably should have done different kind of data processing for improving the model training, and in this case, it would have been essential to have version control with the different methods.
 
 ### Question 11
 
@@ -192,7 +218,21 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 11 fill here ---
+We have organized our CI into only one file which is for unit testing. However at the beginning of the project we were planing to have 3 files. One for linting (flake8, black, etc.) , one for unit test and one for create a docker image. We scraped having a linting workflow file because we setup a precommit hook would not allow a commit to made without having the standard of flake8 and styling of black.
+
+Before we began working with GCP we setup a workflow file for creating a docker image, however when we started moving the project over to GCP, we realized that it would be easier to create the image in GCP instead of Github actions.
+
+For now we have decided only to run the unit test on ubuntu-latest, 12.x with python version 3.8. The workflow file can easily be expanded to run on multiple OS such as macos-latest, 12.x and windows-latest, 12.x. An example of how to add it can be seen here:
+
+```py
+    strategy:
+        matrix:
+            os: [ubuntu-latest, macos-latest, windows-latest]
+```
+
+The same goes for running different version of python such as 3.9. However if this was a bigger project, it would be nice to have these test running as well.
+An example of a triggered workflow can be seen here: [Web-Link](https://github.com/s163928/02476_MLOPS_Project/actions)
+
 
 ## Running code and tracking experiments
 
@@ -211,7 +251,40 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 12 fill here ---
+We have used hydra, omegaconf and wandb to configure and log the experiments. With hydra and omegaconf we have setup a `configs` directory that contains the sub-configuration files for various components of the code like `model, optimizer, training, wandb etc. ` We have specified a default configuration that is activated when we run the code normally (eg. the training code). To run a certain experiment we can specify it as follows after defining the experiment config file in `experiments`.
+
+### Usage
+- Running with [`default`](./../configs/defaults.yaml) config:
+```bash
+$ python src/models/train_LN_model.py
+```
+
+- Hydra multirun on different experimental configurations as defined in [`experiment/`](./../configs/experiment):
+```bash
+$ python src/models/train_LN_model.py -m experiment=expt001,expt002
+```
+
+- An experiment configuration would look similar to,
+```yaml
+training:
+  task: 'multiclass'
+  model_output_name: 'model'
+  model_dir_name: 'models'
+  batch_size: 64
+  limit_train_batches: 0.20  # Limit to 20% of total size.
+  max_epochs: 5
+  optimizer: 'adam'
+  loss: 'CrossEntropy'
+  callbacks:
+    EarlyStopping:
+      monitor: 'val_loss'
+    ModelCheckpoint:
+      monitor: 'val_loss'
+  logging:
+    logger: 'wandb_logger'
+    log_every_n_steps: 1
+```
+Additional configuration can be specified for [`model`](./../configs/model) and [`optimizer`](./../configs/optimizer) separately as well.
 
 ### Question 13
 
@@ -226,7 +299,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 13 fill here ---
+We will rely and make use of the config files for the different experiemnts. The experiemnt configuration file allows us to specify the specific config for the run as described above. Every time the experiment is run, the configuration and the results are logged (the model weights for instance) with the timestamp and name of the run. We can now run a reproducibilty test (to see if the weights match for instance) to see if we can reproduce the results. The alternative to having a configuration file would be e.g. a word or excel file were you could log all the information. You would then have to manually input it and it would be really hard to work with.
 
 ### Question 14
 
@@ -243,7 +316,14 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 14 fill here ---
+![bucket](figures/WanDB-Metrices.png) As seen in the above image, we have tracked metrices like the train and validation loss and accuracy for the model over various runs. We can see the training loss decreasing gradually and corresponding increase in the accuracy.
+
+
+![bucket](figures/WanDB-HParams.png) As seen in this image we have also tracked model hyperparameters for the run. These are logged during the training process. WanDB also allows us to save the model checkpoints during the run and thereby having versions of the model in the model registry.
+
+An attempt was also made to create a table illustrating the predictions during a validation run. However this was not succesfull, as we tried to implement a callback in the lightning module with the `on_validation_end_callback` which would plot the tables; but there was trouble passing the wandb logger to the lightning callback.
+
+Tracking the loss is important as it allows us to understand and evaluate the training performance. If our loss does not show any variation with epochs, we must try to understand the reasons for the same utilising our domain knowledge of the data and also based on our understanding of the model architecture. Following this we can tune the paramters, run multiple expirements, perform hyperparamter sweeps and finally select the best model. 
 
 ### Question 15
 
@@ -258,7 +338,17 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 15 fill here ---
+For our project we have built basically two types of containers:
+1. to train the data on our model and save it to a GCP bucket
+2. to deploy the inference app that gives the result whenever a user uploads an image
+
+The containers can be built locally or using cloudbuild. We have relied on both methods and pushed the images to GCP Container Registry. [Trainer-Image](https://console.cloud.google.com/gcr/images/primal-graph-374308/global/infer_app?project=primal-graph-374308) and [Inference-Image](https://console.cloud.google.com/gcr/images/primal-graph-374308/global/trainer_timm_ln?project=primal-graph-374308) can be found here.
+Now,
+- the training container is used to create a vertex-job as follows,
+  ![bucket](figures/GCP-CloudBuild-Vertex.png)
+  ![bucket](figures/GCP-Vertex-Config.png)
+- the inference container is deployed to cloud run by the following command: `make deploy` which runs the below,
+![bucket](figures/GCP-Run-Deploy.png)
 
 ### Question 16
 
@@ -273,7 +363,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 16 fill here ---
+In this project we are working with many different python packages and we have to learn how to work with each and everyone. In this process bugs will of cause appear, however it is very different how these should be treated. Common ways for all team members to perform debugging is to first of all read the error or warning message. If it is not clear from this message what the mistake was, a google search  is made. It is very common that other people have had similar problems especially when being new to a package or framework. If it is still not clear how the bug should be fixed, the documentation for specif imports an be looked up and gone through. Maybe a package is deprecated or the guide that you are following is multiple years old and the packages have changed a bit.
 
 ## Working in the cloud
 
@@ -290,7 +380,15 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 17 fill here ---
+We used the following services:
+
+* Cloud run – Used for running the api and the trained model. Request can be sent here and a prediction will be made
+* Cloud build – Creating the docker images and pushing it to the container registry.
+* Vertex AI – Used for training the model
+* Cloud Storage (Bucket) – Used for storing training and validation data, together with the trained model that is generated from Vertex AI
+* Container registry – Used to store the docker images that we create
+* Tracer – Used to trace the time it takes from a request to our API to arrive and until it leaves.
+* IAM – Used for handling service account and user settings / privileges
 
 ### Question 18
 
@@ -305,7 +403,12 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 18 fill here ---
+Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with
+```yaml
+machineSpec:
+    machineType: n1-highmem-2
+```
+and the inference container was deployed in the Cloud Run.
 
 ### Question 19
 
@@ -314,7 +417,8 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 19 fill here ---
+![bucket](figures/GCP-Bucket.png)
+![bucket](figures/GCP-Bucket-model.png)
 
 ### Question 20
 
@@ -323,7 +427,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 20 fill here ---
+![bucket](figures/GCP-Registry.png)
 
 ### Question 21
 
@@ -332,7 +436,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 21 fill here ---
+![bucket](figures/GCP-Build.png)
 
 ### Question 22
 
@@ -348,7 +452,17 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 22 fill here ---
+The very first test we for deploying the local, was done by saving a checkpoint locally, setting up FastAPI and a /predict/ endpoint that used the model checkpoint to make a prediction on an incoming image. After a few tries it succeed and we wrapped the model checkpoint and FastAPI into a docker container which was build using a github action workflow file. We got that up and running as well and moved on to using GCP. First of the model was trained with Vertex AI and saved in Cloud Storage (Bucket). A docker image was created and added to the GCP container registry. From here a make command was created to deploy the image on Cloud Run while fetching the trained model from Cloud Storage. To invoke the predict method of the API one can go to the url of the public endpoint or make a  curl command as the following;
+```bash
+curl -X 'POST' \
+$(shell gcloud run services describe infer-app \
+--platform managed \
+--region europe-north1 \
+--format 'value(status.url)')/prediction/ \
+-H 'accept: application/json' \
+-H 'Content-Type: multipart/form-data' \
+-F 'data=@${IMAGE};type=image/jpeg'
+```
 
 ### Question 23
 
@@ -363,7 +477,13 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 23 fill here ---
+We did manage to implement monitoring both data drifting and system monitoring.
+
+For datadrifting we used the evidently AI framework. The project was image classification, so in order to capture features of the input images, we used the CLIP model from open ai. First the abstract features for all training data was extracted as a reference database, and then we set up prediction and feature logging in the inference api. The final datadrift monitoring was then implemented in the inference api with evidently.
+
+For system monitoring we went to the monitoring service in GCP and setup alerts for “Request Count” and “Billable Instance Time” to make sure that the our api was not being spammed with requests and thereby generating a very high cost.
+
+Further more we tried to implement OpenTelemetry to monitor time spend when per request our api was receiving. We got it working locally so that it sends data to the GCP Trace service, however we did not manage to make it report to the Trace service when running in Cloud Run.
 
 ### Question 24
 
@@ -377,7 +497,11 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 24 fill here ---
+* s163928 - 22.5 credits (This account was used for the project)
+* s212919 - 3 credits
+* s120356 - 3 credits
+
+In total 28.5 credits were spend during development. The service costing the most for exercises only were th compute enigine. Including the project Cloud Storage used 19 credits alone. On a second plase is the compute engine and the last services almost did not spend anything
 
 ## Overall discussion of project
 
@@ -398,7 +522,14 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 25 fill here ---
+![bucket](figures/Architecture.png)
+The high level architecture diagram for our project is as shown in the image above. We start developing our code on the local machine. Coding standards are enforces with `PEP8`. We have used `pyTorch-Lightning` for reducing the boilerplate code during model developement. To handle configurations, experiments, logging and reproducibility we have integrated `WanDB` and `Hydra` with Lightning.
+
+Version control is enabled for Code and Data using `GitHub` and `DVC`. `Unit testing` and `linting` are part of the `GitHub Action Workflow`.
+
+In `GCP` we have setup a cloud-project. In `CloudBuild` a `build trigger` is setup to monitor the GitHub Repo. Continuous Integration and Continuous Deployment is thus enabled with GitHub and GCP CloudBuild. The trigger builds the docker image and pushes it to the `Container Registry` for both the trainer:app and the inference:app. A `Vertex-CustomJob` is created using th e trainer-image and the trained model is saved to `GCP Storage` and the training logs can be now vizualised in `WanDB` Web UI for the project.
+
+On the other hand, the inference:app is deployed in `Cloud Run` which loads the trained model from `GCP Storage` and makes it avaiable to the end-user through a `FastAPI` web app available at [Link to Web-App](https://infer-app-xvexekbjda-lz.a.run.app/docs). Here the user uploads an image and can test. `Traces` allow us to visualize and monitor the inference app and `Evidently-AI` allows us to monitor the data drift. With the feedbacks, we can continue to improve our code in an organized way.
 
 ### Question 26
 
@@ -412,7 +543,13 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 26 fill here ---
+The biggest challenges in this project all centered around working with GCP. In this project, working locally allows quick deployment of FastAPI and training of the model. Especially because the data can be stored along side the code and does not need to be stored online.
+
+When the application has to go in GCP a docker image first have to be created where after it should be pushed to the GCP container registry. Once the image has been pushed it should be deployed and only when a VM have been created and setup the docker image, can we test if everything works as intended. During this process one thing we offen had issues with was permissions to the different service accounts and our own accounts. This was often a problem when trying to get the data using dvc.
+
+Reading and understanding documentation on GCP was also a challenge because it seems that some of the packages being used in the official documentation is deprecated. This was the case for setting up OpenTelemetry with GCP trace.
+
+The most frustrating about working with GCP is that it seems like they sometimes hide all the important information in the log files. E.g. we had a docker image that failed to deploy in Cloud Run. We went to the logs for information and got 2 errors with no real indication of the error. We then had to read through all the log entries and in the middle of “nothing” we found a “connection failed” message. From this we could narrow down the error and fix it. We ended up doing this kind of “log fishing” a good amount of times.
 
 ### Question 27
 
@@ -429,4 +566,8 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 27 fill here ---
+* Student s163928 was in charge of github workflow, docker image, unit test and OpenTelemetry
+* Student s212919 was in charge of hydra, Vertex AI, could build, docker container regestry for trainer model.
+* Student s120356 was in charge of DVC data storage, google run, data drift, wandb, ligtning framework.
+
+All members contributed to finding data and setting up the model and the minumum one team member had to review someone else changes before a pull request could be merged with the main branch.
