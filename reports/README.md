@@ -319,9 +319,11 @@ We will rely and make use of the config files for the different experiemnts. The
 ![bucket](figures/WanDB-Metrices.png) As seen in the above image, we have tracked metrices like the train and validation loss and accuracy for the model over various runs. We can see the training loss decreasing gradually and corresponding increase in the accuracy.
 
 
-![bucket](figures/WanDB-HParams.png) As seen in this image we have also tracked model hyperparameters for the run. These are logged during the training process.
+![bucket](figures/WanDB-HParams.png) As seen in this image we have also tracked model hyperparameters for the run. These are logged during the training process. WanDB also allows us to save the model checkpoints during the run and thereby having versions of the model in the model registry.
 
 An attempt was also made to create a table illustrating the predictions during a validation run. However this was not succesfull, as we tried to implement a callback in the lightning module with the `on_validation_end_callback` which would plot the tables; but there was trouble passing the wandb logger to the lightning callback.
+
+Tracking the loss is important as it allows us to understand and evaluate the training performance. If our loss does not show any variation with epochs, we must try to understand the reasons for the same utilising our domain knowledge of the data and also based on our understanding of the model architecture. Following this we can tune the paramters, run multiple expirements, perform hyperparamter sweeps and finally select the best model. 
 
 ### Question 15
 
