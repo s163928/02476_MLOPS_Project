@@ -122,8 +122,11 @@ def upload_model(model_name = 'model.ckpt',
         # copy model file after training to gcp-bucket
         gcp_bucket = '/gcs/mlops-project/jobs/vertex-with-docker'
         model_dir = '/models'
-        shutil.copy2(os.path.join(model_dir,model_name), gcp_bucket)
-        print("Model saved to GCP Bucket")
-
+        try:
+            print(os.listdir(model_dir))
+            shutil.copy2(os.path.join(model_dir,model_name), gcp_bucket)
+            print("Model saved to GCP Bucket")
+        except Exception as e:
+            print(e)
 if __name__ == "__main__":
     main()
