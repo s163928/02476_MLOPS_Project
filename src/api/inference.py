@@ -5,18 +5,24 @@ from google.cloud import storage
 from io import BytesIO
 
 from opentelemetry import trace
-from opentelemetry.exporter.otlp.proto.http.trace_exporter import (
-    OTLPSpanExporter,
-)
 
 from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
+# from opentelemetry.propagate import set_global_textmap
+# from opentelemetry.propagators.cloud_trace_propagator import (
+#    CloudTraceFormatPropagator,
+# )
+
 # set up tracing and open telemetry
 provider = TracerProvider()
-cloud_trace_exporter = CloudTraceSpanExporter()
+trace.set_tracer_provider(provider)
+
+cloud_trace_exporter = CloudTraceSpanExporter(
+    project_id="primal-graph-374308",
+)
 provider.add_span_processor(
     # BatchSpanProcessor buffers spans and sends them in batches in a
     # background thread. The default parameters are sensible, but can be
@@ -24,10 +30,9 @@ provider.add_span_processor(
     BatchSpanProcessor(cloud_trace_exporter)
 )
 
-processor = BatchSpanProcessor(OTLPSpanExporter())
-provider.add_span_processor(processor)
-trace.set_tracer_provider(provider)
 tracer = trace.get_tracer(__name__)
+with tracer.start_as_current_span("foo"):
+    print("Hello world!")
 
 storage_client = storage.Client()
 bucket = storage_client.get_bucket("mlops-project")
@@ -36,6 +41,8 @@ checkpoint_data = blob.download_as_string()
 
 app = FastAPI(title="FastAPI")
 FastAPIInstrumentor.instrument_app(app)
+
+# set_global_textmap(CloudTraceFormatPropagator())
 
 
 @app.get("/")
