@@ -263,7 +263,12 @@ In addition we added a tests folder, .github and ‘wandb’ for unit testing, g
 >
 > Answer:
 
---- question 14 fill here ---
+--- ![bucket](figures/WanDB-Metrices.png) As seen in the above image, we have tracked metrices like the train and validation loss and accuracy for the model over various runs. We can see the training loss decreasing gradually and corresponding increase in the accuracy.
+
+  
+  ![bucket](figures/WanDB-HParams.png) As seen in this image we have also tracked model hyperparameters for the run. These are logged during the training process.
+  
+  An attempt was also made to create a table illustrating the predictions during a validation run. However this was not succesfull, as we tried to implement a callback in the lightning module with the `on_validation_end_callback` which would plot the tables; but there was trouble passing the wandb logger to the lightning callback.---
 
 ### Question 15
 
