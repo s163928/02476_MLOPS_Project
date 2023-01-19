@@ -8,7 +8,7 @@ from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 import torch
 
-# import pandas as pd
+import pandas as pd
 from evidently.report import Report
 from evidently.metric_preset import (
     DataDriftPreset,
@@ -53,7 +53,7 @@ storage_client = storage.Client()
 
 bucket = storage_client.get_bucket("mlops-project")
 blob = bucket.blob("jobs/vertex-with-docker/model.ckpt")
-checkpoint_data = blob.download_as_string()
+checkpoint_data = blob.download_as_bytes()
 
 app = FastAPI(title="FastAPI")
 FastAPIInstrumentor.instrument_app(app)
@@ -143,10 +143,8 @@ async def predict(background_tasks: BackgroundTasks, data: UploadFile = File(...
 @app.get("/monitoring/", response_class=HTMLResponse)
 async def monitoring():
     bucket = storage_client.get_bucket("prediction_database")
-    blob = bucket.blob("prediction_database.csv")
-    prediction_data = blob.download_as_bytes()
-    blob = bucket.blob("reference_database.csv")
-    reference_data = blob.download_as_bytes()
+    prediction_data = bucket.blob("prediction_database.csv").download_as_bytes()
+    reference_data = bucket.blob("reference_database.csv").download_as_bytes()
 
     data_drift_report = Report(
         metrics=[
@@ -157,7 +155,9 @@ async def monitoring():
     )
 
     data_drift_report.run(
-        current_data=prediction_data, reference_data=reference_data, column_mapping=None
+        current_data=pd.read_csv(BytesIO(prediction_data)),
+        reference_data=pd.read_csv(BytesIO(reference_data)),
+        column_mapping=None,
     )
     data_drift_report.save_html("monitoring.html")
 
