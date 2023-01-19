@@ -332,7 +332,10 @@ We used the following services:
 >
 > Answer:
 
---- question 19 fill here ---
+---
+![bucket](figures/GCP-Bucket.png)
+![bucket](figures/GCP-Bucket-model.png)
+---
 
 ### Question 20
 
@@ -341,7 +344,9 @@ We used the following services:
 >
 > Answer:
 
---- question 20 fill here ---
+---
+![bucket](figures/GCP-Registry.png)
+---
 
 ### Question 21
 
