@@ -11,11 +11,11 @@ python-dotenv>=0.5.1
 torch
 torchvision
 wandb
+opentelemetry-exporter-gcp-trace
 pytorch-lightning
 scipy
 timm
 dvc
-
 dvc[gdrive]
 
 dvc-gdrive
@@ -26,3 +26,14 @@ pre-commit
 python-multipart
 pydantic
 transformers
+opentelemetry-exporter-otlp
+opentelemetry-api==1.15.0
+opentelemetry-distro==0.36b0
+opentelemetry-exporter-otlp-proto-http==1.15.0
+opentelemetry-instrumentation==0.36b0
+opentelemetry-instrumentation-asgi==0.36b0
+opentelemetry-instrumentation-fastapi==0.36b0
+opentelemetry-proto==1.15.0
+opentelemetry-sdk==1.15.0
+opentelemetry-semantic-conventions==0.36b0
+opentelemetry-util-http==0.36b0
