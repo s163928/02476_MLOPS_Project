@@ -92,7 +92,14 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 4 fill here ---
+--- We used a simple file called ‘requirements’ in order to keep track of dependencies. Every time someone  needed to do pip install something, they added it to the requirements file as the first thing. In order for someone else to get a complete copy of our development environment they would first have to create a virtual environment with either pipenv or Conda, where after they can run the following make command;
+
+Make requirements
+
+Most make commands are setup to always run “make requirements” before the actual command which makes sure that everything is always installed before running a command.
+
+If we ever forgot to add something to a requirements file, we could also use the package ‘pipreqs’ to auto generate the requirement file however it was never needed. ---
+
 
 ### Question 5
 
@@ -290,7 +297,18 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- question 17 fill here ---
+
+---
+We used the following services:
+
+* Cloud run – Used for running the api and the trained model. Request can be sent here and a prediction will be made
+* Cloud build – Creating the docker images and pushing it to the container registry.
+* Vertex AI – Used for training the model
+* Cloud Storage (Bucket) – Used for storing training and validation data, together with the trained model that is generated from Vertex AI
+* Container registry – Used to store the docker images that we create
+* Tracer – Used to trace the time it takes from a request to our API to arrive and until it leaves.
+* IAM – Used for handling service account and user settings / privileges
+---
 
 ### Question 18
 
