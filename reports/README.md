@@ -338,7 +338,8 @@ We used the following services:
 >
 > Answer:
 
---- question 18 fill here ---
+--- Our project didn't require the use of GCP Compute Engine directly. We instead relied on managed and serverless services like Vertex-AI and Cloud Run instead. We used Vertex for model training in which we would specify the compute configuration on the fly. Our inference app was hosted on Cloud Run. In both cases, we created container images for our code viz, training code and inference app respectively. These were then build and pushed to the container registry using cloudbuild (or locally). The training container image was used to create a vertex custom job with "machineSpec:machineType: n1-highmem-2" and the inference container was deployed in Cloud Run.
+---
 
 ### Question 19
 
