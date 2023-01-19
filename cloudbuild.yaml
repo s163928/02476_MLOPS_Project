@@ -1,7 +1,17 @@
 steps:
-   - name: 'gcr.io/cloud-builders/docker'
-     args: ['build', '-t', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest', '.']
-   - name: 'gcr.io/cloud-builders/docker'
-     args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest']
-   - name: 'gcr.io/vertex-ai-public/vertex-ai-cli'
-     args: ['job', 'create', '--project-id=primal-graph-374308', '--name=vertex-with-docker', '--region=europe-west1', '--config=config_vertex_cpu.yaml']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/primal-graph-374308/trainer_timm_ln:latest']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['ai', 'custom-jobs', 'create', 
+        '--display-name=vertex-with-docker',        
+        '--region=europe-west1',
+        '--config=config_vertex_cpu.yaml',
+        '--project=primal-graph-374308']
+    secretEnv: ['WANDB_API_KEY']
+availableSecrets:
+  secretManager:
+    - versionName: projects/985975349365/secrets/WANDB_API_KEY/versions/1
+      env: 'WANDB_API_KEY'
+

@@ -92,7 +92,11 @@ target/
 /data
 
 #Logging
-wandb
+/wandb
+
+# Hydra
+/outputs/**/**/data
+/outputs/**/**/models
 
 /flowers
 /predict
