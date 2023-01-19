@@ -278,7 +278,18 @@ In addition we added a tests folder, .github and ‘wandb’ for unit testing, g
 >
 > Answer:
 
---- question 15 fill here ---
+--- For our project we have built basically two types of containers: 
+1. to train the data on our model and save it to a GCP bucket
+2. to deploy the inference app that gives the result whenever a user uploads an image
+
+The containers can be built locally or using cloudbuild. We have relied on both methods and pushed the images to GCP Container Registry. [Trainer-Image](https://console.cloud.google.com/gcr/images/primal-graph-374308/global/infer_app?project=primal-graph-374308) and [Inference-Image](https://console.cloud.google.com/gcr/images/primal-graph-374308/global/trainer_timm_ln?project=primal-graph-374308) can be found here.
+Now,
+- the training container is used to create a vertex-job as follows,
+  ![bucket](figures/GCP-CloudBuild-Vertex.png)
+  ![bucket](figures/GCP-Vertex-Config.png)
+- the inference container is deployed to cloud run by the following command: `make deploy` which runs the below,
+![bucket](figures/GCP-Run-Deploy.png)
+ ---
 
 ### Question 16
 
