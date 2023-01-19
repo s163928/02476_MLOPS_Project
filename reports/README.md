@@ -92,7 +92,7 @@ be installed with `pip install click markdown`.
 >
 > Answer:
 
---- We used a simple file called [`requirements`](requirements.txt) in order to keep track of dependencies. Every time someone needed to do `pip install` something, they added it to the requirements file as the first thing. In order for someone else to get a complete copy of our development environment they would first have to create a virtual environment with either `pipenv` or `Conda`, where after they can run the following make command:
+--- We used a simple file called [`requirements`](./../requirements.txt) in order to keep track of dependencies. Every time someone needed to do `pip install` something, they added it to the requirements file as the first thing. In order for someone else to get a complete copy of our development environment they would first have to create a virtual environment with either `pipenv` or `Conda`, where after they can run the following make command:
 
 ```bash
 $ make requirements
@@ -117,11 +117,11 @@ If we ever forgot to add something to a requirements file, we could also use the
 > Answer:
 
 --- From the cookiecutter template we are using the following folders
-* [data](/data)
-* [docs](/docs)
-* [models](/models)
-* [reports](/reports)
-* [src](/src)
+* [data](./../data)
+* [docs](./../docs)
+* [models](./../models)
+* [reports](./../reports)
+* [src](./../src)
 
 The data and models folder are empty on the github repo, but whenever we do `DVC pull` or get the data from GCP cloud storage it goes it the data folder. The model from vertex AI is placed in the models folder. In docs we have added a deploy function to the make file and all source code can be found in src.
 
@@ -130,10 +130,10 @@ We have removed the following folders because we dud not have a use for it in ou
 * References
 
 In addition we added:
-* [tests](/tests)
-* [.github](.github) - for unit testing and github workflow files 
-* [wandb](/wandb) - for wandb
-* [configs](/configs) - for experiment configuration ---
+* [tests](./../tests)
+* [.github](./../.github) - for unit testing and github workflow files 
+* [wandb](./../wandb) - for wandb
+* [configs](./../configs) - for experiment configuration ---
 
 ### Question 6
 
@@ -240,12 +240,12 @@ In addition we added:
 --- We have used hydra, omegaconf and wandb to configure and log the experiments. With hydra and omegaconf we have setup a `configs` directory that contains the sub-configuration files for various components of the code like `model, optimizer, training, wandb etc. ` We have specified a default configuration that is activated when we run the code normally (eg. the training code). To run a certain experiment we can specify it as follows after defining the experiment config file in `experiments`. 
 
 ### Usage
-- Running with [`default`](configs/defaults.yaml) config:
+- Running with [`default`](./../configs/defaults.yaml) config:
 ```bash
 $ python src/models/train_LN_model.py
 ```
 
-- Hydra multirun on different experimental configurations as defined in [`experiment/`](configs/experiment):
+- Hydra multirun on different experimental configurations as defined in [`experiment/`](./../configs/experiment):
 ```bash
 $ python src/models/train_LN_model.py -m experiment=expt001,expt002
 ```
@@ -270,7 +270,7 @@ training:
     logger: 'wandb_logger'
     log_every_n_steps: 1
 ``` 
-Additional configuration can be specified for [`model`](configs/model) and [`optimizer`](configs/optimizer) separately as well. ---
+Additional configuration can be specified for [`model`](./../configs/model) and [`optimizer`](./../configs/optimizer) separately as well. ---
 
 ### Question 13
 
