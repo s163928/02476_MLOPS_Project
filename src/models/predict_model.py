@@ -1,4 +1,5 @@
 import click
+import os
 import pytorch_lightning as pl
 from src.data.LN_data_module import Flowers102DataModule
 from src.models.LN_model import LN_model
@@ -17,8 +18,11 @@ def _predict(model, data):
     predict(model=model, data=data)
 
 
-def predict(model: str, data=None):
-    model = LN_model().load_from_checkpoint(model)
+def predict(data, model: str = "models/model.ckpt"):
+    if os.path.exists(model):
+        model = LN_model().load_from_checkpoint(model)
+    else:
+        model = LN_model()
     datamodule = Flowers102DataModule(predict_data=data)
     trainer = pl.Trainer()
     preds = trainer.predict(model=model, datamodule=datamodule)
