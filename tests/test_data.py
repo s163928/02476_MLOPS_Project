@@ -1,34 +1,9 @@
-import os
-
-import pytest
-import torch
 from torch.utils.data import DataLoader
 
 from src.data.LN_data_module import Flowers102DataModule
-from tests import _PATH_DATA
+from src.data.get_CLIP_features import CLIPFeature
 
 
-@pytest.mark.skipif(
-    not os.path.exists(_PATH_DATA + "/processed/data.pth"),
-    reason="Data files not found",
-)
-def test_check_train_data():
-    data = torch.load(_PATH_DATA + "/processed/processed_data.pth")
-    train_set = data["train"]
-    assert train_set is not None
-
-
-@pytest.mark.skipif(
-    not os.path.exists(_PATH_DATA + "/processed/data.pth"),
-    reason="Data files not found",
-)
-def test_check_test_data():
-    data = torch.load(_PATH_DATA + "/processed/processed_data.pth")
-    test_set = data["test"]
-    assert test_set is not None
-
-
-@pytest.mark.skip(reason="Dataset not downloading in github action")
 def test_Flowers102DataModule_train_data():
     data = Flowers102DataModule()
     data.setup("fit")
@@ -39,7 +14,6 @@ def test_Flowers102DataModule_train_data():
     ), "Train data not being converted to Dataloader object"
 
 
-@pytest.mark.skip(reason="Dataset not downloading in github action")
 def test_Flowers102DataModule_validation_data():
     data = Flowers102DataModule()
     data.setup("fit")
@@ -52,16 +26,14 @@ def test_Flowers102DataModule_validation_data():
     ), "Validation data not being converted to Dataloader object"
 
 
-@pytest.mark.skip(reason="Dataset not downloading in github action")
 def test_Flowers102DataModule_validation_sample_size():
     data = Flowers102DataModule()
     data.setup("fit")
     assert (
-        len(data.set_train) > len(data.set_val) * 8
+        len(data.dataset_train) > len(data.dataset_val) * 8
     ), "Validation set is larger than expected (10%)"
 
 
-@pytest.mark.skip(reason="Dataset not downloading in github action")
 def test_Flowers102DataModule_test_data():
     data = Flowers102DataModule()
     data.setup("test")
@@ -72,9 +44,9 @@ def test_Flowers102DataModule_test_data():
     ), "Test data not being converted to Dataloader object"
 
 
-@pytest.mark.skip(reason="Dataset not downloading in github action")
 def test_Flowers102DataModule_predict_data():
-    data = Flowers102DataModule()
+    example_image = "data/raw/flowers-102/jpg/image_00001.jpg"
+    data = Flowers102DataModule(predict_data=example_image)
     data.setup("predict")
     predict_dataloader = data.predict_dataloader()
     assert (
@@ -83,3 +55,15 @@ def test_Flowers102DataModule_predict_data():
     assert isinstance(
         predict_dataloader, DataLoader
     ), "Predict data not being converted to Dataloader object"
+
+
+def test_CLIPFeature_get_item():
+    DATA_PATH = "data/raw/flowers-102/"
+    LABEL_FILE = "imagelabels.mat"
+    dataset = CLIPFeature(DATA_PATH, LABEL_FILE)
+    feature_dataloader = DataLoader(dataset)
+    _, feature = next(iter(feature_dataloader))
+    assert (
+        len(feature_dataloader) != 0
+    ), "First batch of the CLIP feature dataloader has no data"
+    assert feature.shape == (1, 1, 512), "Feature data is not correct shape"

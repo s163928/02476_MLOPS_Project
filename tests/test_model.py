@@ -2,6 +2,7 @@ import torch
 from torch import nn
 
 from src.models.LN_model import LN_model
+from src.models.predict_model import predict
 
 
 def test_LN_model_model():
@@ -33,6 +34,12 @@ def test_LN_model_optimizer():
     assert is_torch_optim(
         optimizer
     ), "The model from LN_model does not have the 'nn.Module' type"
+
+
+def test_predict_model():
+    example_image = "data/raw/flowers-102/jpg/image_00001.jpg"
+    prediction = predict(data=example_image)
+    assert prediction is not None, "No prediction is made"
 
 
 def is_torch_loss(criterion) -> bool:
